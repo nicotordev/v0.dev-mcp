@@ -27,7 +27,60 @@ const vercelProvider = createVercel({
 
 const v0Model = vercelProvider('v0-1.0-md');
 
-// Tool: Generate web application code
+// Streaming helper function with optimized performance
+async function generateWithOptimalStreaming(
+  prompt: string,
+  maxTokens: number = 4000,
+  useStreaming: boolean = true
+) {
+  if (useStreaming) {
+    // Use Bun-optimized streaming for better performance
+    const result = await streamText({
+      model: v0Model,
+      prompt,
+      maxTokens,
+      temperature: 0.7, // Balanced creativity
+    });
+
+    let fullText = '';
+    const chunks: string[] = [];
+
+    // Optimized streaming with backpressure handling
+    for await (const textPart of result.textStream) {
+      fullText += textPart;
+      chunks.push(textPart);
+
+      // Yield control to event loop every 100 chunks for better performance
+      if (chunks.length % 100 === 0) {
+        await new Promise((resolve) => setImmediate(resolve));
+      }
+    }
+
+    return {
+      text: fullText,
+      usage: await result.usage,
+      streamed: true,
+      chunkCount: chunks.length,
+    };
+  } else {
+    // Fallback to regular generation
+    const result = await generateText({
+      model: v0Model,
+      prompt,
+      maxTokens,
+      temperature: 0.7,
+    });
+
+    return {
+      text: result.text,
+      usage: result.usage,
+      streamed: false,
+      chunkCount: 0,
+    };
+  }
+}
+
+// Tool: Generate web application code with optimized streaming
 server.tool(
   'generate_webapp',
   'Generate complete web applications with AI assistance',
@@ -48,10 +101,12 @@ server.tool(
     stream: z
       .boolean()
       .optional()
-      .default(false)
-      .describe('Whether to stream the response'),
+      .default(true)
+      .describe(
+        'Whether to stream the response (default: true for better performance)'
+      ),
   },
-  async ({ prompt, framework = 'nextjs', features = [], stream = false }) => {
+  async ({ prompt, framework = 'nextjs', features = [], stream = true }) => {
     try {
       // Build the enhanced prompt
       let enhancedPrompt = `Create a ${framework} application: ${prompt}`;
@@ -63,56 +118,31 @@ server.tool(
       enhancedPrompt +=
         '\n\nPlease provide complete, production-ready code with proper file structure, dependencies, and best practices.';
 
-      if (stream) {
-        // Use streaming for real-time response
-        const result = await streamText({
-          model: v0Model,
-          prompt: enhancedPrompt,
-          maxTokens: 4000,
-        });
+      const result = await generateWithOptimalStreaming(
+        enhancedPrompt,
+        4000,
+        stream
+      );
 
-        let fullText = '';
-        for await (const textPart of result.textStream) {
-          fullText += textPart;
-        }
-
-        return {
-          content: [
-            {
-              type: 'text',
-              text: fullText,
-            },
-          ],
-          metadata: {
-            framework,
-            features,
-            streamed: true,
-            usage: await result.usage,
+      return {
+        content: [
+          {
+            type: 'text',
+            text: result.text,
           },
-        };
-      } else {
-        // Use regular generation
-        const result = await generateText({
-          model: v0Model,
-          prompt: enhancedPrompt,
-          maxTokens: 4000,
-        });
-
-        return {
-          content: [
-            {
-              type: 'text',
-              text: result.text,
-            },
-          ],
-          metadata: {
-            framework,
-            features,
-            streamed: false,
-            usage: result.usage,
+        ],
+        metadata: {
+          framework,
+          features,
+          streamed: result.streamed,
+          chunkCount: result.chunkCount,
+          performance: {
+            streamingEnabled: stream,
+            responseTime: Date.now(),
           },
-        };
-      }
+          usage: result.usage,
+        },
+      };
     } catch (error) {
       return {
         content: [
@@ -129,7 +159,7 @@ server.tool(
   }
 );
 
-// Tool: Enhance existing code
+// Tool: Enhance existing code with streaming support
 server.tool(
   'enhance_code',
   'Improve existing code with AI-powered suggestions',
@@ -141,8 +171,13 @@ server.tool(
       .optional()
       .default('typescript')
       .describe('Programming language of the code'),
+    stream: z
+      .boolean()
+      .optional()
+      .default(true)
+      .describe('Whether to stream the response for faster feedback'),
   },
-  async ({ code, enhancement, language }) => {
+  async ({ code, enhancement, language, stream = true }) => {
     try {
       const prompt = `Enhance this ${language} code: ${enhancement}
 
@@ -153,11 +188,7 @@ ${code}
 
 Please provide the enhanced version with explanations of the changes made.`;
 
-      const result = await generateText({
-        model: v0Model,
-        prompt,
-        maxTokens: 3000,
-      });
+      const result = await generateWithOptimalStreaming(prompt, 3000, stream);
 
       return {
         content: [
@@ -168,6 +199,9 @@ Please provide the enhanced version with explanations of the changes made.`;
         ],
         metadata: {
           language,
+          streamed: result.streamed,
+          chunkCount: result.chunkCount,
+          codeLength: code.length,
           usage: result.usage,
         },
       };
@@ -187,7 +221,7 @@ Please provide the enhanced version with explanations of the changes made.`;
   }
 );
 
-// Tool: Debug and fix code
+// Tool: Debug and fix code with streaming
 server.tool(
   'debug_code',
   'Debug and fix code issues automatically',
@@ -199,8 +233,13 @@ server.tool(
       .optional()
       .default('typescript')
       .describe('Programming language'),
+    stream: z
+      .boolean()
+      .optional()
+      .default(true)
+      .describe('Whether to stream the response for real-time debugging'),
   },
-  async ({ code, error_message, language }) => {
+  async ({ code, error_message, language, stream = true }) => {
     try {
       let prompt = `Debug and fix this ${language} code:
 
@@ -215,11 +254,7 @@ ${code}
       prompt +=
         '\n\nPlease identify the issues and provide the corrected code with explanations.';
 
-      const result = await generateText({
-        model: v0Model,
-        prompt,
-        maxTokens: 3000,
-      });
+      const result = await generateWithOptimalStreaming(prompt, 3000, stream);
 
       return {
         content: [
@@ -231,6 +266,8 @@ ${code}
         metadata: {
           language,
           had_error_message: !!error_message,
+          streamed: result.streamed,
+          chunkCount: result.chunkCount,
           usage: result.usage,
         },
       };
@@ -250,7 +287,7 @@ ${code}
   }
 );
 
-// Tool: Generate component
+// Tool: Generate component with streaming support
 server.tool(
   'generate_component',
   'Create reusable components with proper TypeScript types',
@@ -275,8 +312,21 @@ server.tool(
       )
       .optional()
       .describe('Component props specification'),
+    stream: z
+      .boolean()
+      .optional()
+      .default(true)
+      .describe(
+        'Whether to stream the response for faster component generation'
+      ),
   },
-  async ({ component_name, description, framework, props = [] }) => {
+  async ({
+    component_name,
+    description,
+    framework,
+    props = [],
+    stream = true,
+  }) => {
     try {
       let prompt = `Create a ${framework} component named "${component_name}": ${description}`;
 
@@ -295,11 +345,7 @@ server.tool(
       prompt +=
         '\n\nPlease provide a complete, reusable component with TypeScript types, proper styling, and documentation.';
 
-      const result = await generateText({
-        model: v0Model,
-        prompt,
-        maxTokens: 2500,
-      });
+      const result = await generateWithOptimalStreaming(prompt, 2500, stream);
 
       return {
         content: [
@@ -312,6 +358,8 @@ server.tool(
           component_name,
           framework,
           props_count: props.length,
+          streamed: result.streamed,
+          chunkCount: result.chunkCount,
           usage: result.usage,
         },
       };

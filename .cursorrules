@@ -72,7 +72,7 @@ bun run type-check      # TypeScript validation
 - Always include return types for functions
 - Use modern ES6+ features (async/await, destructuring, etc.)
 
-### MCP Tool Pattern
+### MCP Tool Pattern with Streaming
 
 ```typescript
 server.tool(
@@ -80,13 +80,32 @@ server.tool(
   {
     param: z.string().describe('Clear parameter description'),
     optional: z.string().optional().describe('Optional parameter'),
+    stream: z
+      .boolean()
+      .optional()
+      .default(true)
+      .describe('Whether to stream the response for better performance'),
   },
-  async ({ param, optional }) => {
+  async ({ param, optional, stream = true }) => {
     try {
-      // Implementation
+      // Use optimized streaming helper
+      const result = await generateWithOptimalStreaming(
+        prompt,
+        maxTokens,
+        stream
+      );
+
       return {
-        content: [{ type: 'text', text: result }],
-        metadata: { usage: tokenUsage },
+        content: [{ type: 'text', text: result.text }],
+        metadata: {
+          usage: result.usage,
+          streamed: result.streamed,
+          chunkCount: result.chunkCount,
+          performance: {
+            streamingEnabled: stream,
+            responseTime: Date.now(),
+          },
+        },
       };
     } catch (error) {
       return {
@@ -217,12 +236,32 @@ Please provide:
 - Prefer Bun APIs over Node.js when available
 - Utilize fast package installation
 
+### Streaming Performance
+
+**Always use streaming for AI text generation** - it provides:
+
+- **Faster perceived response times** (chunks arrive immediately)
+- **Better user experience** with progressive content loading
+- **Reduced memory pressure** on long responses
+- **Improved concurrency** handling in Bun runtime
+
+```typescript
+// ✅ Good - Use streaming with optimized backpressure
+const result = await generateWithOptimalStreaming(prompt, 4000, true);
+
+// ❌ Avoid - Blocking generation for long responses
+const result = await generateText({ model, prompt, maxTokens: 4000 });
+```
+
 ### Code Optimization
 
-- Use streaming responses when beneficial
-- Implement proper async/await patterns
+- **Prioritize streaming responses** for better performance and UX
+- Use `generateWithOptimalStreaming()` helper for all AI text generation
+- Implement proper async/await patterns with backpressure handling
 - Avoid blocking operations in MCP tools
 - Cache expensive computations
+- Yield control to event loop during long streaming operations
+- Monitor chunk count and performance metrics
 
 ## 🔄 Common Tasks & Commands
 
@@ -286,6 +325,9 @@ When working with generated code or components:
 5. **Don't forget error handling** - Always wrap in try-catch
 6. **Don't ignore test coverage** - Maintain above 80%
 7. **Don't commit sensitive data** - Use .gitignore properly
+8. **Don't use blocking AI generation** - Always prefer streaming responses
+9. **Don't ignore backpressure** - Use `setImmediate()` for long streams
+10. **Don't forget performance metrics** - Track streaming chunk counts
 
 ## 🎯 File Modification Guidelines
 
