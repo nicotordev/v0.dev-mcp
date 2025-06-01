@@ -1,5 +1,5 @@
 {
-  "name": "@nicotordev/v0-mcp-ts",
+  "name": "v0-mcp-ts",
   "version": "1.0.0",
   "description": "A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development. Powered by Bun for 25x faster performance.",
   "main": "dist/index.js",
