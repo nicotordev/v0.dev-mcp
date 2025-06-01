@@ -1,5 +1,5 @@
 {
-  "name": "v0-mcp-ts",
+  "name": "@nicotordev/v0-mcp-ts",
   "version": "1.0.0",
   "description": "A powerful Model Context Protocol (MCP) server that integrates v0dev AI capabilities for modern web development",
   "main": "dist/index.js",
@@ -31,6 +31,20 @@
   },
   "homepage": "https://github.com/nicotordev/v0-mcp-ts#readme",
   "license": "MIT",
+  "files": [
+    "dist/",
+    "examples/",
+    "scripts/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "bin": {
+    "v0-mcp-ts": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "build": "tsc",
@@ -53,7 +67,7 @@
     "docker:test": "docker-compose --profile testing up --build",
     "release": "npm version patch && git push && git push --tags"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@ai-sdk/vercel": "^0.0.1",
     "@modelcontextprotocol/sdk": "^1.12.1",
