@@ -29,7 +29,7 @@ An AI-native IDE with Cascade and Flow features for autonomous development workf
    npm install && npm run build
    ```
 
-2. **Get v0dev API Key**:
+2. **Get v0.dev API Key**:
    - Visit [v0.dev](https://v0.dev)
    - Subscribe to Premium or Team plan
    - Generate API key from dashboard
@@ -51,7 +51,7 @@ An AI-native IDE with Cascade and Flow features for autonomous development workf
 3. **Update paths**:
 
    - Replace `/absolute/path/to/v0-mcp-ts/dist/index.js` with your actual path
-   - Replace `your_v0_api_key_here` with your v0dev API key
+   - Replace `your_v0_api_key_here` with your v0.dev API key
 
 4. **Enable YOLO Mode**:
    - Go to Settings → Advanced → Enable YOLO Mode
@@ -294,7 +294,7 @@ Use the `enhance_code` tool regularly:
 - [v0-mcp-ts Documentation](../../README.md)
 - [MCP Protocol Specification](https://modelcontextprotocol.io/)
 - [Cursor Tips & Tricks](https://www.builder.io/blog/cursor-tips)
-- [v0dev API Documentation](https://vercel.com/docs/v0/api)
+- [v0.dev API Documentation](https://vercel.com/docs/v0/api)
 
 ## 💡 Contributing
 

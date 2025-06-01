@@ -7,7 +7,7 @@ Complete guide for configuring environment variables in v0-mcp-ts.
 ### 1. Local Development (.env)
 
 ```bash
-# v0dev API Key (REQUIRED)
+# v0.dev API Key (REQUIRED)
 V0_API_KEY=your_v0_api_key_here
 
 # Node Environment
@@ -42,7 +42,7 @@ BUN_CONFIG_TEST_TIMEOUT=30000  # Test timeout in milliseconds
 Set these via your hosting platform's environment variables:
 
 ```bash
-# Real v0dev API key
+# Real v0.dev API key
 V0_API_KEY=your_production_api_key
 
 # Production environment
@@ -65,7 +65,7 @@ Configure these in your GitHub repository settings:
 - `NPM_TOKEN` - For publishing to npm registry (when using bun publish)
 - `DOCKER_USERNAME` - Docker Hub username
 - `DOCKER_PASSWORD` - Docker Hub password
-- `V0_API_KEY` - Production v0dev API key
+- `V0_API_KEY` - Production v0.dev API key
 
 ### Optional:
 
@@ -74,7 +74,7 @@ Configure these in your GitHub repository settings:
 
 ## 📋 Setup Instructions
 
-### 1. Get v0dev API Key
+### 1. Get v0.dev API Key
 
 1. Visit [v0.dev](https://v0.dev)
 2. Subscribe to Premium or Team plan
@@ -105,7 +105,7 @@ bun install
    - **NPM_TOKEN**: Your npm publish token
    - **DOCKER_USERNAME**: Your Docker Hub username
    - **DOCKER_PASSWORD**: Your Docker Hub password
-   - **V0_API_KEY**: Your production v0dev API key
+   - **V0_API_KEY**: Your production v0.dev API key
    - **BUN_AUTH_TOKEN**: (Optional) For private registries
 
 ### 4. Verify Security
@@ -207,7 +207,7 @@ BUN_AUTH_TOKEN=${{ secrets.BUN_AUTH_TOKEN }}
 ### "API quota exceeded"
 
 - You've hit the 200 messages/day limit
-- Upgrade your v0dev plan
+- Upgrade your v0.dev plan
 - Wait for quota reset (daily)
 
 ### Tests failing with API errors
@@ -255,6 +255,6 @@ BUN_CONFIG_MAX_OLD_SPACE_SIZE=4096
 
 - [Bun Environment Variables](https://bun.sh/docs/runtime/environment-variables)
 - [Bun Configuration](https://bun.sh/docs/runtime/bunfig)
-- [v0dev API Documentation](https://vercel.com/docs/v0/api)
+- [v0.dev API Documentation](https://vercel.com/docs/v0/api)
 - [Environment Variables Best Practices](https://nextjs.org/docs/pages/guides/environment-variables)
 - [GitHub Secrets Documentation](https://docs.github.com/en/actions/security-guides/encrypted-secrets)

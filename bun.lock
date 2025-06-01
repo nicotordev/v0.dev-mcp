@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "v0dev-mcp",
+      "name": "v0.dev-mcp",
       "dependencies": {
         "@ai-sdk/vercel": "^0.0.1",
         "@modelcontextprotocol/sdk": "^1.12.1",

@@ -41,7 +41,7 @@ bun install  # ⚡ Up to 25x faster than npm install
 
 ```bash
 cp .env.example .env
-# Edit .env with your v0dev API key
+# Edit .env with your v0.dev API key
 ```
 
 ### 3. Development with Watch Mode
@@ -57,14 +57,14 @@ This command starts the server in development mode with auto-reload using Bun's 
 ### Core Components
 
 1. **McpServer**: Main server handling MCP protocol
-2. **Tools**: Functions exposing v0dev functionality
+2. **Tools**: Functions exposing v0.dev functionality
 3. **Resources**: Static resources like documentation
 4. **Prompts**: Predefined templates for interactions
 
 ### Data Flow
 
 ```
-MCP Client → Transport (stdio) → MCP Server → v0dev API → Response
+MCP Client → Transport (stdio) → MCP Server → v0.dev API → Response
 ```
 
 ## 🔧 Adding New Tools
@@ -392,7 +392,7 @@ bun version patch  # or minor, major
 git push && git push --tags
 ```
 
-## 📊 v0dev API
+## 📊 v0.dev API
 
 ### Limits and Considerations
 
@@ -461,7 +461,7 @@ Format as markdown with proper code blocks.`;
 
 4. **Rate limit errors**
 
-   - Respect v0dev API limits
+   - Respect v0.dev API limits
    - Implement retry logic if necessary
 
 5. **Bun installation issues**
@@ -517,7 +517,7 @@ bun --version            # Check Bun version
 - [Bun Documentation](https://bun.sh/docs)
 - [Bun GitHub Actions Guide](https://bun.sh/guides/runtime/cicd)
 - [MCP Documentation](https://modelcontextprotocol.io/)
-- [v0dev API](https://vercel.com/docs/v0/api)
+- [v0.dev API](https://vercel.com/docs/v0/api)
 - [AI SDK](https://sdk.vercel.ai/)
 - [Zod Documentation](https://zod.dev/)
 - [Vitest Documentation](https://vitest.dev/)

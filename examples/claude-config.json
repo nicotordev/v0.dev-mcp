@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "v0dev": {
+    "v0.dev": {
       "command": "node",
-      "args": ["/absolute/path/to/your/v0dev-mcp/dist/index.js"],
+      "args": ["/absolute/path/to/your/v0.dev-mcp/dist/index.js"],
       "env": {
         "V0_API_KEY": "your_v0_api_key_here"
       }

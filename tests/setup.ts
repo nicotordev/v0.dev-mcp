@@ -8,7 +8,7 @@ if (!process.env.V0_API_KEY) {
 
 // Global test setup
 beforeAll(async () => {
-  console.log('🚀 Setting up v0dev MCP Server tests...');
+  console.log('🚀 Setting up v0.dev MCP Server tests...');
 });
 
 afterAll(async () => {

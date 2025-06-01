@@ -15,9 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **@vitest/coverage-v8** - Improved test coverage reporting with v8 provider
 - **Performance Documentation** - Added Bun-specific commands and performance benefits guide
 - Initial project setup and architecture
-- MCP server implementation with v0dev integration
+- MCP server implementation with v0.dev integration
 - Four core tools: `generate_webapp`, `enhance_code`, `debug_code`, `generate_component`
-- Resource for v0dev API documentation
+- Resource for v0.dev API documentation
 - Prompt template for web app generation
 - Comprehensive test suite with Vitest
 - Docker support with multi-stage builds
@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **🔧 Build Process** - Optimized build and test scripts to use Bun's native capabilities
 - **📚 Documentation** - Updated all documentation to reflect Bun migration
 - **🛠️ Development Workflow** - Enhanced development experience with Bun's hot reload
-- Project renamed from `v0dev-mcp` to `v0-mcp-ts`
+- Project renamed from `v0.dev-mcp` to `v0-mcp-ts`
 - Documentation fully translated to English
 - Added author information and professional branding
 
@@ -65,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **🔒 Enhanced Security** - Modern security auditing with bun audit
 - Initial release of v0-mcp-ts
 - Full Model Context Protocol implementation
-- Integration with v0dev AI API
+- Integration with v0.dev AI API
 - TypeScript SDK with comprehensive type safety
 - Production-ready Docker containers
 - Automated CI/CD pipeline with Bun

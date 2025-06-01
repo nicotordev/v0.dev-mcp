@@ -6,7 +6,7 @@
 [![Tests](https://github.com/nicotordev/v0-mcp-ts/workflows/Tests/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 [![Build](https://github.com/nicotordev/v0-mcp-ts/workflows/Build/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 
-> 🚀 **A powerful Model Context Protocol (MCP) server that integrates v0dev AI capabilities for modern web development**
+> 🚀 **A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development**
 
 Transform your development workflow with AI-powered web application generation, code enhancement, debugging, and component creation through the standardized MCP protocol. **Now powered by Bun for 25x faster performance!** ⚡
 
@@ -40,7 +40,7 @@ mcp-tool generate_component --name "UserCard" --description "Profile card compon
 ## 📋 Prerequisites
 
 - **Bun** 1.2.0 or higher (for best performance)
-- **v0dev API Key** (Premium or Team plan required)
+- **v0.dev API Key** (Premium or Team plan required)
 - **TypeScript** 5.0+
 - **MCP Client** (Claude Desktop, Cursor, etc.)
 
@@ -75,7 +75,7 @@ bun run setup
 
 This interactive setup will:
 
-- Configure your v0dev API key
+- Configure your v0.dev API key
 - Build the project with Bun
 - Run tests with coverage
 - Generate MCP client configuration
@@ -175,7 +175,7 @@ Create reusable components with proper TypeScript types.
 
 ### `v0-api-docs`
 
-Access comprehensive v0dev API documentation and best practices.
+Access comprehensive v0.dev API documentation and best practices.
 
 **URI:** `v0://api-docs`
 
@@ -256,7 +256,7 @@ bun --version            # Check version
 - **Daily Requests:** 200 messages per day
 - **Context Window:** 128,000 tokens
 - **Output Limit:** 32,000 tokens
-- **Plan Required:** v0dev Premium or Team
+- **Plan Required:** v0.dev Premium or Team
 
 ## 🤝 Contributing
 
@@ -288,7 +288,7 @@ Full Stack Web Developer specializing in Node.js, React.js, Next.js, Vue.js, and
 ## 🔗 Links
 
 - 📖 [MCP Documentation](https://modelcontextprotocol.io/)
-- 🎨 [v0dev API](https://vercel.com/docs/v0/api)
+- 🎨 [v0.dev API](https://vercel.com/docs/v0/api)
 - ⚡ [Bun Documentation](https://bun.sh/docs)
 - 🧠 [AI SDK](https://sdk.vercel.ai/)
 - 🏗️ [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)

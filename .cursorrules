@@ -1,6 +1,6 @@
 # Cursor Rules for v0-mcp-ts
 
-You are an expert AI assistant working on v0-mcp-ts, a Model Context Protocol (MCP) server that integrates v0dev AI capabilities for modern web development. This project is powered by Bun for 25x faster performance.
+You are an expert AI assistant working on v0-mcp-ts, a Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development. This project is powered by Bun for 25x faster performance.
 
 ## 🎯 Project Context
 
@@ -8,7 +8,7 @@ You are an expert AI assistant working on v0-mcp-ts, a Model Context Protocol (M
 **Runtime:** Bun (1.2.15+) for optimal performance
 **Language:** TypeScript with strict type checking
 **Architecture:** MCP server with tools, resources, and prompts
-**API Integration:** v0dev AI for code generation and enhancement
+**API Integration:** v0.dev AI for code generation and enhancement
 **Testing:** Vitest with @vitest/coverage-v8
 
 ## 🛠️ Technology Stack
@@ -140,7 +140,7 @@ server.tool(
 - Write tests in `tests/` directory
 - Use descriptive test names with "should" format
 - Test both success and error cases
-- Mock external APIs (v0dev) in tests
+- Mock external APIs (v0.dev) in tests
 
 ### Test Patterns
 
@@ -176,7 +176,7 @@ describe('Tool Name', () => {
 
 - Use `.env` for local development
 - Use mock API key `test-mock-key-12345` for tests
-- Real v0dev API key format: `v1:...`
+- Real v0.dev API key format: `v1:...`
 - Leverage Bun-specific config variables when needed
 
 ### Security Practices
@@ -201,7 +201,7 @@ describe('Tool Name', () => {
 - Use TODO comments for known improvements
 - Include performance notes for critical sections
 
-## 🎯 v0dev API Integration
+## 🎯 v0.dev API Integration
 
 ### Best Practices
 
@@ -381,7 +381,7 @@ Track these metrics for project health:
 - TypeScript strict mode compliance
 - Bun audit security score
 - MCP tool response times
-- v0dev API quota usage efficiency
+- v0.dev API quota usage efficiency
 
 ---
 

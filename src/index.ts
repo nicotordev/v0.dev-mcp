@@ -17,7 +17,7 @@ const server = new McpServer({
   name: 'v0-mcp-ts',
   version: '1.0.0',
   description:
-    'A powerful MCP server integrating v0dev AI capabilities for modern web development',
+    'A powerful MCP server integrating v0.dev AI capabilities for modern web development',
 });
 
 // Configure the v0 provider and model
@@ -385,7 +385,7 @@ server.resource('v0-api-docs', 'v0://api-docs', async () => ({
     {
       uri: 'v0://api-docs',
       mimeType: 'text/markdown',
-      text: `# v0dev API Documentation
+      text: `# v0.dev API Documentation
 
 ## Model: v0-1.0-md
 

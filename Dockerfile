@@ -64,6 +64,6 @@ CMD ["node", "dist/index.js"]
 
 # Metadata
 LABEL maintainer="Nicolas Torres <nicotordev@gmail.com>"
-LABEL description="v0-mcp-ts: A powerful MCP server for v0dev AI integration"
+LABEL description="v0-mcp-ts: A powerful MCP server for v0.dev AI integration"
 LABEL version="1.0.0"
 LABEL repository="https://github.com/nicotordev/v0-mcp-ts"

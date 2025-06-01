@@ -52,7 +52,7 @@ cp examples/vscode-config.json ~/.vscode/mcp_config.json
 Replace the following placeholders in your chosen config file:
 
 - `/absolute/path/to/v0-mcp-ts/dist/index.js` → Your actual server path
-- `your_v0_api_key_here` → Your v0dev API key
+- `your_v0_api_key_here` → Your v0.dev API key
 
 ### 3. Restart Your Client
 
@@ -136,7 +136,7 @@ If this project helps you build amazing applications, consider supporting its de
 - [Main Documentation](../README.md)
 - [Development Guide](../DEVELOPMENT.md)
 - [MCP Protocol](https://modelcontextprotocol.io/)
-- [v0dev API](https://vercel.com/docs/v0/api)
+- [v0.dev API](https://vercel.com/docs/v0/api)
 
 ---
 

@@ -37,14 +37,14 @@ async function main() {
 
     // Step 2: Get API key if not found
     if (!apiKey || apiKey === 'your_v0_api_key_here') {
-      console.log('\n🔑 v0dev API Key Setup');
-      console.log('You need a v0dev API key to use this server.');
+      console.log('\n🔑 v0.dev API Key Setup');
+      console.log('You need a v0.dev API key to use this server.');
       console.log(
         'Get your API key from: https://v0.dev (requires Premium or Team plan)\n'
       );
 
       apiKey = await question(
-        'Enter your v0dev API key (or press Enter to skip): '
+        'Enter your v0.dev API key (or press Enter to skip): '
       );
 
       if (apiKey) {
@@ -79,7 +79,7 @@ async function main() {
 
     const claudeConfig = {
       mcpServers: {
-        v0dev: {
+        v0.dev: {
           command: 'node',
           args: [distPath],
           env: {
@@ -101,7 +101,7 @@ async function main() {
     console.log(
       '2. Or manually add the server to your MCP client configuration'
     );
-    console.log('3. Start using the v0dev tools in your MCP client!\n');
+    console.log('3. Start using the v0.dev tools in your MCP client!\n');
 
     console.log('Available tools:');
     console.log('- generate_webapp: Create complete web applications');

@@ -5,7 +5,7 @@ import { spawn, ChildProcess } from 'child_process';
 import { join } from 'path';
 import { cwd } from 'process';
 
-describe('v0dev MCP Server', () => {
+describe('v0.dev MCP Server', () => {
   let client: Client;
   let transport: StdioClientTransport;
   let serverProcess: ChildProcess | null = null;
@@ -26,7 +26,7 @@ describe('v0dev MCP Server', () => {
 
     // Create client
     client = new Client({
-      name: 'v0dev-test-client',
+      name: 'v0.dev-test-client',
       version: '1.0.0',
     });
 

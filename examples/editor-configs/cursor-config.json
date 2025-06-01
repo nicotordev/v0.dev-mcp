@@ -71,7 +71,7 @@
     }
   },
   "integrations": {
-    "v0dev": {
+    "v0.dev": {
       "enabled": true,
       "serverName": "v0-mcp-ts",
       "tools": [

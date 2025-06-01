@@ -4,7 +4,7 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { join } from 'path';
 import { cwd } from 'process';
 
-describe('v0dev MCP Server Tools', () => {
+describe('v0.dev MCP Server Tools', () => {
   let client: Client;
   let transport: StdioClientTransport;
 
@@ -21,7 +21,7 @@ describe('v0dev MCP Server Tools', () => {
     });
 
     client = new Client({
-      name: 'v0dev-tools-test-client',
+      name: 'v0.dev-tools-test-client',
       version: '1.0.0',
     });
 

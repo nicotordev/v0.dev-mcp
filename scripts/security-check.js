@@ -29,7 +29,7 @@ try {
 
   // Check for potential API key patterns
   const suspiciousPatterns = [
-    /v1:[a-zA-Z0-9]{20,}/g, // v0dev API keys
+    /v1:[a-zA-Z0-9]{20,}/g, // v0.dev API keys
     /sk-[a-zA-Z0-9]{20,}/g, // OpenAI keys
     /pk_[a-zA-Z0-9]{20,}/g, // Stripe keys
     /rk_[a-zA-Z0-9]{20,}/g, // Other API keys
