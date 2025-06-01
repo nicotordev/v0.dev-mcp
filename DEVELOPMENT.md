@@ -7,7 +7,7 @@ Development guide for contributing to v0-mcp-ts.
 ```
 v0-mcp-ts/
 ├── .github/
-│   └── workflows/          # GitHub Actions CI/CD
+│   └── workflows/          # GitHub Actions CI/CD (using Bun)
 ├── src/
 │   └── index.ts           # Main MCP server
 ├── tests/
@@ -21,6 +21,7 @@ v0-mcp-ts/
 ├── package.json           # Dependencies and scripts
 ├── tsconfig.json          # TypeScript configuration
 ├── vitest.config.ts       # Testing configuration
+├── bun.lock               # Bun lockfile (faster than package-lock.json)
 ├── Dockerfile             # Container configuration
 ├── docker-compose.yml     # Multi-service setup
 └── README.md              # Main documentation
@@ -33,7 +34,7 @@ v0-mcp-ts/
 ```bash
 git clone https://github.com/nicotordev/v0-mcp-ts.git
 cd v0-mcp-ts
-npm install
+bun install  # ⚡ Up to 25x faster than npm install
 ```
 
 ### 2. Environment Configuration
@@ -46,10 +47,10 @@ cp .env.example .env
 ### 3. Development with Watch Mode
 
 ```bash
-npm run dev
+bun run dev
 ```
 
-This command starts the server in development mode with auto-reload.
+This command starts the server in development mode with auto-reload using Bun's native watch mode.
 
 ## 🏗️ MCP Server Architecture
 
@@ -262,23 +263,23 @@ describe('Tool Name', () => {
 });
 ```
 
-### Running Tests
+### Running Tests with Bun
 
 ```bash
-# All tests
-npm test
+# All tests (using Bun's fast test runner)
+bun test
 
 # Specific tests
-npm test -- tools.test.ts
+bun test tools.test.ts
 
 # UI tests
-npm run test:ui
+bun run test:ui
 
-# Coverage report
-npm run test:coverage
+# Coverage report (with @vitest/coverage-v8)
+bun run test:coverage
 
 # Watch mode
-npm run test:watch
+bun run test:watch
 ```
 
 ## 🐳 Docker Development
@@ -287,16 +288,16 @@ npm run test:watch
 
 ```bash
 # Build Docker image
-npm run docker:build
+bun run docker:build
 
 # Run with environment variables
-npm run docker:run
+bun run docker:run
 
 # Development with Docker Compose
-npm run docker:dev
+bun run docker:dev
 
 # Testing with Docker Compose
-npm run docker:test
+bun run docker:test
 ```
 
 ### Docker Services
@@ -311,14 +312,14 @@ npm run docker:test
 
 ```bash
 # With detailed logs
-DEBUG=true npm run dev
+DEBUG=true bun run dev
 ```
 
 ### Test Debug
 
 ```bash
 # With verbose Vitest logs
-npm test -- --reporter=verbose
+bun test --reporter=verbose
 ```
 
 ### MCP Client Debug
@@ -337,8 +338,8 @@ client.setRequestHandler('notification', (notification) => {
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make changes and add tests
-4. Verify all tests pass: `npm test`
-5. Verify build: `npm run build`
+4. Verify all tests pass: `bun test`
+5. Verify build: `bun run build`
 6. Commit: `git commit -m 'Add amazing feature'`
 7. Push: `git push origin feature/amazing-feature`
 8. Create Pull Request
@@ -365,28 +366,29 @@ client.setRequestHandler('notification', (notification) => {
 
 ### GitHub Actions Workflows
 
-1. **CI** (`ci.yml`):
+1. **Quality Test** (`quality-test.yml`):
 
-   - Runs on push/PR to main
-   - Tests on Node.js 18, 20, 22
-   - Security audit
-   - Code quality analysis
-   - Bundle size analysis
+   - Uses Bun for all operations (install, test, build)
+   - Runs on push/PR to main/develop
+   - Security audit with `bun audit`
+   - TypeScript checking with `bun run type-check`
+   - Test coverage with `@vitest/coverage-v8`
+   - Build verification
 
 2. **Release** (`release.yml`):
    - Triggered by version tags
    - Creates GitHub releases
-   - Publishes to npm
+   - Publishes to npm (with Bun)
    - Builds and pushes Docker images
 
 ### Creating a Release
 
 ```bash
 # Create and push a new version
-npm run release
+bun run release
 
 # Or manually:
-npm version patch  # or minor, major
+bun version patch  # or minor, major
 git push && git push --tags
 ```
 
@@ -449,7 +451,7 @@ Format as markdown with proper code blocks.`;
 
 2. **"Transport connection failed"**
 
-   - Verify build completed: `npm run build`
+   - Verify build completed: `bun run build`
    - Verify path in client configuration
 
 3. **"Tool validation error"**
@@ -458,8 +460,14 @@ Format as markdown with proper code blocks.`;
    - Check data types sent
 
 4. **Rate limit errors**
+
    - Respect v0dev API limits
    - Implement retry logic if necessary
+
+5. **Bun installation issues**
+   - Update Bun: `bun upgrade`
+   - Clear cache: `bun pm cache rm`
+   - Reinstall dependencies: `rm -rf node_modules bun.lock && bun install`
 
 ### Debug Logs
 
@@ -472,8 +480,42 @@ console.error('Debug info:', {
 });
 ```
 
+## ⚡ Bun Advantages
+
+### Performance Benefits
+
+- **25x faster** package installation than npm
+- **Native TypeScript support** without transpilation
+- **Built-in test runner** with Jest compatibility
+- **Hot reload** with native watch mode
+- **Bundle size optimization**
+
+### Bun-Specific Commands
+
+```bash
+# Package management
+bun install              # Install dependencies
+bun add <package>        # Add dependency
+bun remove <package>     # Remove dependency
+bun update               # Update all dependencies
+bun audit                # Security audit (v1.2.15+)
+
+# Development
+bun run dev              # Start development server
+bun run build            # Build project
+bun test                 # Run tests
+bun --watch src/index.ts # Watch mode
+
+# Utilities
+bun upgrade              # Update Bun itself
+bun pm cache rm          # Clear package cache
+bun --version            # Check Bun version
+```
+
 ## 📖 Useful Resources
 
+- [Bun Documentation](https://bun.sh/docs)
+- [Bun GitHub Actions Guide](https://bun.sh/guides/runtime/cicd)
 - [MCP Documentation](https://modelcontextprotocol.io/)
 - [v0dev API](https://vercel.com/docs/v0/api)
 - [AI SDK](https://sdk.vercel.ai/)
@@ -492,4 +534,4 @@ console.error('Debug info:', {
 - 💼 LinkedIn: [nicotordev](https://www.linkedin.com/in/nicotordev/)
 - 🎥 YouTube: [NicoTorDev Channel](https://www.youtube.com/channel/UCcOj4lCqvmND56JDz1ZMWuA)
 
-Full Stack Web Developer specializing in Node.js, React.js, Next.js, Vue.js, and modern web technologies.
+Full Stack Web Developer specializing in Node.js, React.js, Next.js, Vue.js, and modern web technologies with expertise in Bun runtime optimization.

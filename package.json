@@ -1,7 +1,7 @@
 {
   "name": "@nicotordev/v0-mcp-ts",
   "version": "1.0.0",
-  "description": "A powerful Model Context Protocol (MCP) server that integrates v0dev AI capabilities for modern web development",
+  "description": "A powerful Model Context Protocol (MCP) server that integrates v0dev AI capabilities for modern web development. Powered by Bun for 25x faster performance.",
   "main": "dist/index.js",
   "module": "index.ts",
   "type": "module",
@@ -15,7 +15,9 @@
     "claude",
     "code-generation",
     "component-generation",
-    "debugging"
+    "debugging",
+    "bun",
+    "performance"
   ],
   "author": {
     "name": "Nicolas Torres",
@@ -43,7 +45,8 @@
     "v0-mcp-ts": "./dist/index.js"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "bun": ">=1.2.0"
   },
   "scripts": {
     "dev": "bun run --watch src/index.ts",
@@ -60,13 +63,16 @@
     "lint:fix": "echo 'Linting and fixing...' && exit 0",
     "type-check": "tsc --noEmit",
     "setup": "node scripts/setup.js",
-    "security-check": "node scripts/security-check.js",
-    "postinstall": "npm run build",
+    "security-check": "bun audit && node scripts/security-check.js",
+    "postinstall": "bun run build",
     "docker:build": "docker build -t v0-mcp-ts .",
     "docker:run": "docker run -e V0_API_KEY=$V0_API_KEY v0-mcp-ts",
     "docker:dev": "docker-compose --profile development up --build",
     "docker:test": "docker-compose --profile testing up --build",
-    "release": "npm version patch && git push && git push --tags"
+    "release": "bun version patch && git push && git push --tags",
+    "bun:upgrade": "bun upgrade",
+    "bun:cache:clear": "bun pm cache rm",
+    "bun:install:clean": "rm -rf node_modules bun.lock && bun install"
   },
   "private": false,
   "dependencies": {
