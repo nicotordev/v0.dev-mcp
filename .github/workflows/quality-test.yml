@@ -26,51 +26,59 @@ jobs:
           fetch-depth: 0 # For better git history access
 
       # ─────────────────────────────────────────────
-      - name: 🔧 Setup Node.js 20.x
-        uses: actions/setup-node@v4
+      - name: ⚡ Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20.x'
-          cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            package.json
+          bun-version: latest # Ensure we get v1.2.15+ for bun audit support
 
       # ─────────────────────────────────────────────
       - name: 📥 Install dependencies
         run: |
-          if [ -f package-lock.json ]; then
-            echo "🟢 Using npm ci for faster, reliable installs"
-            npm ci --prefer-offline --no-audit --no-fund
+          echo "🚀 Installing dependencies with Bun (up to 25x faster than npm)"
+          echo "Bun version: $(bun --version)"
+
+          if [ -f bun.lock ] || [ -f bun.lockb ]; then
+            echo "🟢 Using bun install with lockfile for reproducible builds"
+            bun install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            echo "🟡 npm lockfile detected - installing with Bun"
+            bun install
+            echo "::notice::Consider switching to bun.lock for faster installs"
           elif [ -f yarn.lock ]; then
-            echo "🟡 Yarn lockfile detected - consider migrating to npm for consistency"
-            npm install --no-fund --no-audit
+            echo "🟡 Yarn lockfile detected - installing with Bun"
+            bun install
+            echo "::notice::Consider switching to bun.lock for faster installs"
           else
             echo "🔴 No lockfile found - this may cause inconsistent installs"
-            npm install --no-fund --no-audit
-            echo "::warning::Consider committing package-lock.json for reproducible builds"
+            bun install
+            echo "::warning::Consider committing bun.lock for reproducible builds"
           fi
 
       # ─────────────────────────────────────────────
       - name: 🔍 Type check
-        run: npm run type-check
+        run: bun run type-check
         continue-on-error: false
 
       - name: 🛡️ Security audit
         run: |
-          echo "Running security audit..."
-          if npm audit --audit-level=high --production; then
-            echo "✅ No high-severity vulnerabilities found"
+          echo "Running security audit with Bun..."
+          echo "Bun version: $(bun --version)"
+
+          # bun audit is available in v1.2.15+
+          if bun audit; then
+            echo "✅ No security vulnerabilities found"
           else
-            echo "⚠️ Security vulnerabilities detected"
-            npm audit --audit-level=high --production --json > security-report.json || true
-            echo "::warning::High-severity vulnerabilities found. Check security-report.json"
+            echo "⚠️ Security vulnerabilities detected by bun audit"
+            echo "::warning::Security vulnerabilities found. Review the audit output above"
+            # Don't fail the build on vulnerabilities, just warn
+            exit 0
           fi
 
       # ─────────────────────────────────────────────
       - name: 🧪 Run tests with coverage
         run: |
-          echo "Running tests with coverage..."
-          npm run test:coverage
+          echo "Running tests with coverage using Bun..."
+          bun run test:coverage
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
@@ -86,8 +94,8 @@ jobs:
       # ─────────────────────────────────────────────
       - name: 🏗️ Build project
         run: |
-          echo "Building project..."
-          npm run build
+          echo "Building project with Bun..."
+          bun run build
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
@@ -121,7 +129,7 @@ jobs:
         run: |
           echo "## 🧪 Quality Check Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Node.js Version:** 20.x" >> $GITHUB_STEP_SUMMARY
+          echo "- **Runtime:** Bun $(bun --version)" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** $NODE_ENV" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -133,4 +141,11 @@ jobs:
           if [ -d "dist" ]; then
             DIST_SIZE=$(du -sh dist/ 2>/dev/null | cut -f1 || echo "Unknown")
             echo "- **Build Size:** $DIST_SIZE" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Show package manager used
+          if [ -f "bun.lock" ] || [ -f "bun.lockb" ]; then
+            echo "- **Package Manager:** Bun (native lockfile) ⚡" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Package Manager:** Bun (migrated from npm/yarn) ⚡" >> $GITHUB_STEP_SUMMARY
           fi
