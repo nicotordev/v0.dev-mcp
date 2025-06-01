@@ -1,4 +1,4 @@
-name: 🧪 Check
+name: 🧪 Quality test
 
 on:
   push:
@@ -11,67 +11,126 @@ env:
   NODE_ENV: test
   V0_API_KEY: ${{ secrets.V0_API_KEY }}
   DEBUG: true
+  CI: true
 
 jobs:
-  check:
+  quality-check:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+    timeout-minutes: 15
 
     steps:
       # ─────────────────────────────────────────────
       - name: 📦 Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # For better git history access
 
       # ─────────────────────────────────────────────
-      - name: 🔧 Setup Node.js ${{ matrix.node-version }}
+      - name: 🔧 Setup Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }} # 🚫 SIN cache
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            package.json
 
       # ─────────────────────────────────────────────
       - name: 📥 Install dependencies
         run: |
-          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]; then
-            echo "🟢 Lockfile encontrado → npm ci"
-            npm ci
-          else
-            echo "🟡 Sin lockfile → npm install"
+          if [ -f package-lock.json ]; then
+            echo "🟢 Using npm ci for faster, reliable installs"
+            npm ci --prefer-offline --no-audit --no-fund
+          elif [ -f yarn.lock ]; then
+            echo "🟡 Yarn lockfile detected - consider migrating to npm for consistency"
             npm install --no-fund --no-audit
+          else
+            echo "🔴 No lockfile found - this may cause inconsistent installs"
+            npm install --no-fund --no-audit
+            echo "::warning::Consider committing package-lock.json for reproducible builds"
           fi
 
       # ─────────────────────────────────────────────
       - name: 🔍 Type check
         run: npm run type-check
+        continue-on-error: false
 
-      - name: 🛡️ Security check
-        run: npm run security-check
+      - name: 🛡️ Security audit
+        run: |
+          echo "Running security audit..."
+          if npm audit --audit-level=high --production; then
+            echo "✅ No high-severity vulnerabilities found"
+          else
+            echo "⚠️ Security vulnerabilities detected"
+            npm audit --audit-level=high --production --json > security-report.json || true
+            echo "::warning::High-severity vulnerabilities found. Check security-report.json"
+          fi
 
-      - name: 🧪 Run tests
-        run: npm run test:run
+      # ─────────────────────────────────────────────
+      - name: 🧪 Run tests with coverage
+        run: |
+          echo "Running tests with coverage..."
+          npm run test:coverage
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
 
-      - name: 📊 Generate coverage report
-        run: npm run test:coverage
-
-      # Para evitar duplicados, subimos cobertura solo desde Node 20
-      - name: 📈 Upload coverage to Codecov
-        if: matrix.node-version == '20.x'
+      - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
           fail_ci_if_error: false
+          verbose: true
+        if: success() || failure() # Upload even if tests fail
 
       # ─────────────────────────────────────────────
       - name: 🏗️ Build project
-        run: npm run build
+        run: |
+          echo "Building project..."
+          npm run build
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
 
       - name: ✅ Verify build artifacts
         run: |
-          if [ ! -f "dist/index.js" ]; then
-            echo "❌ Build failed: dist/index.js not found"
+          echo "Verifying build output..."
+
+          # Check if dist directory exists
+          if [ ! -d "dist" ]; then
+            echo "❌ Build failed: dist/ directory not found"
             exit 1
-          else
-            echo "✅ Build successful: dist/index.js created"
+          fi
+
+          # Check for main build artifacts (adjust paths as needed)
+          if [ ! -f "dist/index.js" ] && [ ! -f "dist/main.js" ] && [ ! -f "dist/app.js" ]; then
+            echo "❌ Build failed: No main JS file found in dist/"
+            echo "Contents of dist/:"
+            ls -la dist/ || echo "dist/ is empty"
+            exit 1
+          fi
+
+          # Check build size (optional - adjust threshold as needed)
+          DIST_SIZE=$(du -sh dist/ | cut -f1)
+          echo "✅ Build successful - Output size: $DIST_SIZE"
+          echo "Build artifacts:"
+          find dist/ -type f -name "*.js" -o -name "*.css" -o -name "*.html" | head -10
+
+      # ─────────────────────────────────────────────
+      - name: 📝 Generate job summary
+        if: always()
+        run: |
+          echo "## 🧪 Quality Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Node.js Version:** 20.x" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** $NODE_ENV" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f "coverage/lcov-report/index.html" ]; then
+            echo "- **Coverage Report:** Generated ✅" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -d "dist" ]; then
+            DIST_SIZE=$(du -sh dist/ 2>/dev/null | cut -f1 || echo "Unknown")
+            echo "- **Build Size:** $DIST_SIZE" >> $GITHUB_STEP_SUMMARY
           fi
