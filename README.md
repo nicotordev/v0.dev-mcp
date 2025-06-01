@@ -91,6 +91,15 @@ Copy the generated configuration to your Claude Desktop config:
 
 The server uses standard stdio transport, making it compatible with any MCP client.
 
+## 🤖 AI Editor Integration
+
+Get started quickly with these optimized configurations for AI-powered code editors:
+
+- **[Cursor AI Configuration](examples/editor-configs/cursor-config.json)** - Complete setup with YOLO mode and test-driven development
+- **[Windsurf IDE Configuration](examples/editor-configs/windsurf-config.json)** - Advanced workflows with Cascade and Flow features
+
+📖 **[Full Editor Setup Guide](examples/editor-configs/README.md)**
+
 ## 🛠️ Available Tools
 
 ### `generate_webapp`
@@ -242,6 +251,23 @@ Full Stack Web Developer specializing in Node.js, React.js, Next.js, Vue.js, and
 ## 🌟 Show Your Support
 
 If this project helped you, please give it a ⭐ on GitHub!
+
+### 💖 Sponsor This Project
+
+Support continued development and maintenance:
+
+<p align="center">
+  <a href="https://github.com/sponsors/nicotordev">
+    <iframe src="https://github.com/sponsors/nicotordev/button" title="Sponsor nicotordev" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+  </a>
+</p>
+
+**[Become a sponsor on GitHub](https://github.com/sponsors/nicotordev)** and help keep this project growing! Your support enables:
+
+- 🚀 **Continuous Development** - New features and improvements
+- 🐛 **Bug Fixes & Maintenance** - Quick responses to issues
+- 📚 **Documentation & Tutorials** - Better learning resources
+- 🤝 **Community Support** - Help other developers succeed
 
 ---
 
