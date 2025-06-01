@@ -1,0 +1,166 @@
+{
+  "mcpServers": {
+    "v0-mcp-ts": {
+      "command": "node",
+      "args": ["/absolute/path/to/v0-mcp-ts/dist/index.js"],
+      "env": {
+        "V0_API_KEY": "your_v0_api_key_here",
+        "NODE_ENV": "development"
+      }
+    }
+  },
+  "windsurf": {
+    "aiProvider": "claude-3.5-sonnet",
+    "enableCascade": true,
+    "enableFlow": true,
+    "workflowSettings": {
+      "autonomousMode": true,
+      "iterativeRefinement": true,
+      "testDrivenApproach": true,
+      "contextAwareness": "high"
+    },
+    "codeGeneration": {
+      "language": "typescript",
+      "framework": "react",
+      "testingFramework": "vitest",
+      "styleFramework": "tailwindcss",
+      "includeDocumentation": true
+    },
+    "flowControl": {
+      "autoCommit": false,
+      "requireApproval": true,
+      "maxIterations": 10,
+      "stopOnError": false
+    }
+  },
+  "features": {
+    "cascade": {
+      "enabled": true,
+      "multiFileEditing": true,
+      "crossFileContext": true,
+      "dependencyTracking": true
+    },
+    "flow": {
+      "enabled": true,
+      "planning": true,
+      "execution": true,
+      "validation": true,
+      "learning": true
+    },
+    "intelliSense": {
+      "enabled": true,
+      "contextual": true,
+      "predictive": true,
+      "multiLanguage": true
+    },
+    "debugging": {
+      "aiAssisted": true,
+      "logAnalysis": true,
+      "errorPrediction": true,
+      "autoFix": true
+    },
+    "refactoring": {
+      "enabled": true,
+      "preserveLogic": true,
+      "improvePerformance": true,
+      "maintainTests": true
+    }
+  },
+  "integrations": {
+    "v0dev": {
+      "enabled": true,
+      "serverName": "v0-mcp-ts",
+      "availableTools": [
+        {
+          "name": "generate_webapp",
+          "description": "Generate complete web applications with AI assistance",
+          "useCase": "Full-stack application development"
+        },
+        {
+          "name": "enhance_code",
+          "description": "Improve existing code with AI-powered suggestions",
+          "useCase": "Code optimization and refactoring"
+        },
+        {
+          "name": "debug_code",
+          "description": "Debug and fix code issues automatically",
+          "useCase": "Error resolution and debugging"
+        },
+        {
+          "name": "generate_component",
+          "description": "Create reusable components with proper TypeScript types",
+          "useCase": "Component library development"
+        }
+      ],
+      "defaultOptions": {
+        "framework": "nextjs",
+        "language": "typescript",
+        "streaming": false
+      }
+    },
+    "git": {
+      "enabled": true,
+      "autoStage": false,
+      "conventionalCommits": true,
+      "branchNaming": "feature/{task-description}"
+    },
+    "testing": {
+      "framework": "vitest",
+      "coverage": true,
+      "autoRun": true,
+      "watchMode": true
+    }
+  },
+  "workflows": {
+    "newFeature": {
+      "steps": [
+        "analyze_requirements",
+        "generate_tests",
+        "implement_code",
+        "run_tests",
+        "fix_issues",
+        "optimize_code",
+        "validate_solution"
+      ],
+      "tools": ["generate_webapp", "enhance_code", "debug_code"],
+      "validation": "all_tests_pass"
+    },
+    "bugFix": {
+      "steps": [
+        "identify_issue",
+        "reproduce_bug",
+        "analyze_code",
+        "implement_fix",
+        "test_solution",
+        "prevent_regression"
+      ],
+      "tools": ["debug_code", "enhance_code"],
+      "validation": "issue_resolved"
+    },
+    "codeReview": {
+      "steps": [
+        "analyze_changes",
+        "check_standards",
+        "suggest_improvements",
+        "validate_tests",
+        "approve_changes"
+      ],
+      "tools": ["enhance_code"],
+      "validation": "quality_standards_met"
+    }
+  },
+  "customPrompts": {
+    "smartGeneration": "Using the v0-mcp-ts server, create a {type} with the following specifications: {specs}. Ensure the solution follows best practices, includes proper error handling, and maintains high code quality standards.",
+    "iterativeImprovement": "Analyze the current code and suggest improvements. Use the enhance_code tool to implement optimizations while maintaining functionality and adding comprehensive tests.",
+    "debugAssist": "Investigate this issue: {problem}. Use the debug_code tool to identify the root cause and implement a robust solution with proper error handling and logging.",
+    "componentDesign": "Design and implement a {framework} component for {purpose}. Include TypeScript definitions, styling, accessibility features, and usage documentation."
+  },
+  "settings": {
+    "autoSave": true,
+    "formatOnSave": true,
+    "lintOnSave": true,
+    "typeCheck": true,
+    "hotReload": true,
+    "sourceMap": true
+  }
+}

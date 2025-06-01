@@ -1,0 +1,93 @@
+{
+  "mcpServers": {
+    "v0-mcp-ts": {
+      "command": "node",
+      "args": ["/absolute/path/to/v0-mcp-ts/dist/index.js"],
+      "env": {
+        "V0_API_KEY": "your_v0_api_key_here"
+      }
+    }
+  },
+  "cursor": {
+    "aiModel": "claude-3.5-sonnet",
+    "enableComposer": true,
+    "enableYOLOMode": true,
+    "yoloModeSettings": {
+      "allowedCommands": [
+        "npm test",
+        "npm run test",
+        "bun test",
+        "vitest",
+        "tsc",
+        "npm run build",
+        "bun run build",
+        "mkdir",
+        "touch",
+        "eslint",
+        "prettier"
+      ],
+      "prompt": "Tests and build commands are always allowed. Creating files and directories is permitted. TypeScript compilation and linting are encouraged for code quality.",
+      "allowTestExecution": true,
+      "allowBuildCommands": true
+    },
+    "codeGeneration": {
+      "preferTypeScript": true,
+      "includeTests": true,
+      "useModernSyntax": true,
+      "framework": "react"
+    },
+    "workflow": {
+      "testDrivenDevelopment": true,
+      "autoFixLinting": true,
+      "iterativeImprovement": true
+    }
+  },
+  "features": {
+    "autoComplete": {
+      "enabled": true,
+      "multiSuggestion": true,
+      "contextAware": true
+    },
+    "inlineChat": {
+      "enabled": true,
+      "shortcuts": {
+        "quickEdit": "Cmd+K",
+        "agentChat": "Cmd+I"
+      }
+    },
+    "terminalIntegration": {
+      "enabled": true,
+      "aiAssistance": true,
+      "gitCommands": true
+    },
+    "bugFinder": {
+      "enabled": true,
+      "compareWithMain": true,
+      "autoScan": true
+    },
+    "commitMessageGeneration": {
+      "enabled": true,
+      "followConventionalCommits": true
+    }
+  },
+  "integrations": {
+    "v0dev": {
+      "enabled": true,
+      "serverName": "v0-mcp-ts",
+      "tools": [
+        "generate_webapp",
+        "enhance_code",
+        "debug_code",
+        "generate_component"
+      ],
+      "defaultFramework": "nextjs",
+      "streamingEnabled": false
+    }
+  },
+  "customPrompts": {
+    "webAppGeneration": "Create a {framework} application with the following requirements: {requirements}. Include proper TypeScript types, error handling, and modern best practices. Write tests first, then implement the code, and iterate until all tests pass.",
+    "codeEnhancement": "Enhance this code with {enhancement}. Maintain existing functionality while improving code quality, performance, and readability. Include proper TypeScript types and add tests if missing.",
+    "debugging": "Debug this code issue: {error}. Identify the root cause, fix the problem, and add tests to prevent regression. Explain the solution clearly.",
+    "componentGeneration": "Create a reusable {framework} component named {name} that {description}. Include proper TypeScript props, styling, accessibility features, and usage examples."
+  }
+}
