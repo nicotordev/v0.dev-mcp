@@ -60,6 +60,7 @@
     "lint:fix": "echo 'Linting and fixing...' && exit 0",
     "type-check": "tsc --noEmit",
     "setup": "node scripts/setup.js",
+    "security-check": "node scripts/security-check.js",
     "postinstall": "npm run build",
     "docker:build": "docker build -t v0-mcp-ts .",
     "docker:run": "docker run -e V0_API_KEY=$V0_API_KEY v0-mcp-ts",
