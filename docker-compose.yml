@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  v0-mcp-ts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: v0-mcp-ts
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - V0_API_KEY=${V0_API_KEY}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      # Mount configuration files (optional)
+      - ./examples:/app/examples:ro
+      # Mount logs directory (optional)
+      - ./logs:/app/logs
+    networks:
+      - v0-mcp-network
+    healthcheck:
+      test: ['CMD', 'node', '-e', "console.log('Health check passed')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.environment=production'
+
+  # Development service
+  v0-mcp-ts-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: v0-mcp-ts-dev
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - V0_API_KEY=${V0_API_KEY}
+      - DEBUG=true
+    volumes:
+      # Mount source code for development
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./vitest.config.ts:/app/vitest.config.ts
+      # Mount node_modules to persist between runs
+      - node_modules:/app/node_modules
+    working_dir: /app
+    command: npm run dev
+    networks:
+      - v0-mcp-network
+    profiles:
+      - development
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.environment=development'
+
+  # Testing service
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: v0-mcp-ts-test
+    environment:
+      - NODE_ENV=test
+      - V0_API_KEY=test-mock-key-12345
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./vitest.config.ts:/app/vitest.config.ts
+      - ./coverage:/app/coverage
+    working_dir: /app
+    command: npm run test:run
+    networks:
+      - v0-mcp-network
+    profiles:
+      - testing
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.environment=test'
+
+networks:
+  v0-mcp-network:
+    driver: bridge
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+
+volumes:
+  node_modules:
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
