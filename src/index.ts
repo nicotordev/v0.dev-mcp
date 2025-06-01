@@ -14,10 +14,10 @@ if (!V0_API_KEY) {
 
 // Create the MCP server
 const server = new McpServer({
-  name: 'v0dev-mcp-server',
+  name: 'v0-mcp-ts',
   version: '1.0.0',
   description:
-    'MCP server for v0dev API - Create modern web applications with AI',
+    'A powerful MCP server integrating v0dev AI capabilities for modern web development',
 });
 
 // Configure the v0 provider and model
@@ -30,6 +30,7 @@ const v0Model = vercelProvider('v0-1.0-md');
 // Tool: Generate web application code
 server.tool(
   'generate_webapp',
+  'Generate complete web applications with AI assistance',
   {
     prompt: z
       .string()
@@ -131,6 +132,7 @@ server.tool(
 // Tool: Enhance existing code
 server.tool(
   'enhance_code',
+  'Improve existing code with AI-powered suggestions',
   {
     code: z.string().describe('Existing code to enhance'),
     enhancement: z.string().describe('Description of the enhancement needed'),
@@ -188,6 +190,7 @@ Please provide the enhanced version with explanations of the changes made.`;
 // Tool: Debug and fix code
 server.tool(
   'debug_code',
+  'Debug and fix code issues automatically',
   {
     code: z.string().describe('Code with issues to debug'),
     error_message: z.string().optional().describe('Error message if available'),
@@ -250,6 +253,7 @@ ${code}
 // Tool: Generate component
 server.tool(
   'generate_component',
+  'Create reusable components with proper TypeScript types',
   {
     component_name: z.string().describe('Name of the component to generate'),
     description: z
@@ -421,7 +425,7 @@ async function main() {
   try {
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error('v0dev MCP Server started successfully');
+    console.error('v0-mcp-ts server started successfully');
   } catch (error) {
     console.error('Failed to start server:', error);
     process.exit(1);
