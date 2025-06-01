@@ -1,4 +1,4 @@
-name: 🧪 Test Suite
+name: 🧪 Run Tests & Type Checks
 
 on:
   push:
@@ -18,22 +18,38 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      # 1️⃣ No cancelar los demás jobs si uno falla
+      fail-fast: false
       matrix:
         node-version: [18.x, 20.x, 22.x]
 
     steps:
+      # ─────────────────────────────────────────────
       - name: 📦 Checkout code
         uses: actions/checkout@v4
 
+      # ─────────────────────────────────────────────
       - name: 🔧 Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
+      # ─────────────────────────────────────────────
+      # 2️⃣ Instalar dependencias con fallback si NO hay lockfile
       - name: 📥 Install dependencies
-        run: npm ci
+        id: install
+        run: |
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]; then
+            echo "🟢 Lockfile encontrado → ejecutando 'npm ci'"
+            npm ci
+          else
+            echo "🟡 No lockfile encontrado en $GITHUB_REF → ejecutando 'npm install'"
+            echo "ℹ️  Considera commitear tu package-lock.json para builds reproducibles."
+            npm install --no-fund --no-audit
+          fi
 
+      # ─────────────────────────────────────────────
       - name: 🔍 Type check
         run: npm run type-check
 
@@ -46,6 +62,7 @@ jobs:
       - name: 📊 Generate coverage report
         run: npm run test:coverage
 
+      # Solo subimos cobertura desde Node 20 para evitar duplicados
       - name: 📈 Upload coverage to Codecov
         if: matrix.node-version == '20.x'
         uses: codecov/codecov-action@v4
@@ -53,10 +70,11 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
+  # ──────────────────────────────────────────────────────────────
   build:
     name: 🏗️ Build Check
     runs-on: ubuntu-latest
-    needs: test
+    needs: test   # espera a que TODOS los jobs de 'test' terminen
 
     steps:
       - name: 📦 Checkout code
@@ -69,7 +87,12 @@ jobs:
           cache: 'npm'
 
       - name: 📥 Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install --no-fund --no-audit
+          fi
 
       - name: 🏗️ Build project
         run: npm run build
