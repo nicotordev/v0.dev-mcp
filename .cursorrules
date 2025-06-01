@@ -1,0 +1,346 @@
+# Cursor Rules for v0-mcp-ts
+
+You are an expert AI assistant working on v0-mcp-ts, a Model Context Protocol (MCP) server that integrates v0dev AI capabilities for modern web development. This project is powered by Bun for 25x faster performance.
+
+## 🎯 Project Context
+
+**Project:** v0-mcp-ts - AI-powered MCP server for web development
+**Runtime:** Bun (1.2.15+) for optimal performance
+**Language:** TypeScript with strict type checking
+**Architecture:** MCP server with tools, resources, and prompts
+**API Integration:** v0dev AI for code generation and enhancement
+**Testing:** Vitest with @vitest/coverage-v8
+
+## 🛠️ Technology Stack
+
+- **Runtime:** Bun (primary), Node.js (compatibility)
+- **Language:** TypeScript 5.0+ with strict mode
+- **Frameworks:** MCP SDK, AI SDK (Vercel)
+- **Validation:** Zod for runtime type validation
+- **Testing:** Vitest with coverage reporting
+- **CI/CD:** GitHub Actions with Bun
+- **Containerization:** Docker with multi-stage builds
+
+## 📁 Project Structure Understanding
+
+```
+v0-mcp-ts/
+├── .github/workflows/       # GitHub Actions with Bun setup
+├── src/index.ts            # Main MCP server implementation
+├── tests/                  # Vitest test suite
+├── scripts/setup.js        # Interactive project setup
+├── examples/               # Editor configurations and examples
+├── bun.lock               # Bun lockfile (prioritize over package-lock.json)
+├── vitest.config.ts       # Test configuration with v8 coverage
+└── .cursorrules           # This file
+```
+
+## 🚀 Development Workflow Preferences
+
+### Package Management
+
+- **Always use Bun commands** instead of npm/yarn
+- Use `bun install` for dependencies (25x faster than npm)
+- Use `bun add <package>` for adding dependencies
+- Use `bun remove <package>` for removing dependencies
+- Use `bun audit` for security scanning (v1.2.15+)
+
+### Development Commands
+
+```bash
+bun run dev              # Development with hot reload
+bun test                 # Run tests with Bun's fast runner
+bun run test:coverage    # Coverage with @vitest/coverage-v8
+bun run build           # TypeScript compilation
+bun run type-check      # TypeScript validation
+```
+
+### Performance Focus
+
+- Prioritize Bun-native solutions
+- Leverage TypeScript without transpilation overhead
+- Use built-in Bun test runner when possible
+- Optimize for hot reload and watch mode
+
+## 💻 Coding Standards & Patterns
+
+### TypeScript Preferences
+
+- Use strict TypeScript configuration
+- Prefer `interface` over `type` for object shapes
+- Use Zod for runtime validation in MCP tools
+- Always include return types for functions
+- Use modern ES6+ features (async/await, destructuring, etc.)
+
+### MCP Tool Pattern
+
+```typescript
+server.tool(
+  'tool_name',
+  {
+    param: z.string().describe('Clear parameter description'),
+    optional: z.string().optional().describe('Optional parameter'),
+  },
+  async ({ param, optional }) => {
+    try {
+      // Implementation
+      return {
+        content: [{ type: 'text', text: result }],
+        metadata: { usage: tokenUsage },
+      };
+    } catch (error) {
+      return {
+        content: [{ type: 'text', text: `Error: ${error.message}` }],
+        isError: true,
+      };
+    }
+  }
+);
+```
+
+### Error Handling
+
+- Always wrap MCP tool implementations in try-catch
+- Return structured error responses with `isError: true`
+- Include meaningful error messages
+- Log errors with context for debugging
+
+### Code Style
+
+- Use 2-space indentation
+- Use single quotes for strings
+- Add trailing commas in multiline objects/arrays
+- Use descriptive variable and function names
+- Include JSDoc comments for public APIs
+
+## 🧪 Testing Approach
+
+### Test Structure
+
+- Use Vitest for all testing
+- Write tests in `tests/` directory
+- Use descriptive test names with "should" format
+- Test both success and error cases
+- Mock external APIs (v0dev) in tests
+
+### Test Patterns
+
+```typescript
+describe('Tool Name', () => {
+  let client: Client;
+
+  beforeAll(async () => {
+    // Setup MCP client
+  });
+
+  it('should handle valid input correctly', async () => {
+    const result = await client.callTool({
+      name: 'tool_name',
+      arguments: { param: 'value' },
+    });
+
+    expect(result.content).toBeDefined();
+    expect(result.isError).toBeFalsy();
+  });
+});
+```
+
+### Coverage Requirements
+
+- Maintain test coverage above 80%
+- Focus on tool functionality and error paths
+- Use `bun run test:coverage` to verify coverage
+
+## 🔧 Environment & Configuration
+
+### Environment Variables
+
+- Use `.env` for local development
+- Use mock API key `test-mock-key-12345` for tests
+- Real v0dev API key format: `v1:...`
+- Leverage Bun-specific config variables when needed
+
+### Security Practices
+
+- Never commit real API keys
+- Use `bun audit` for dependency security
+- Validate all inputs with Zod schemas
+- Follow principle of least privilege
+
+## 📚 Documentation Standards
+
+### Code Documentation
+
+- Use JSDoc for public APIs
+- Include parameter descriptions in Zod schemas
+- Document tool purposes and usage examples
+- Keep README.md updated with new features
+
+### Comments
+
+- Explain why, not what
+- Use TODO comments for known improvements
+- Include performance notes for critical sections
+
+## 🎯 v0dev API Integration
+
+### Best Practices
+
+- Respect 200 messages/day limit
+- Use structured prompts for better results
+- Include context and examples in prompts
+- Handle rate limiting gracefully
+- Cache results when appropriate
+
+### Prompt Engineering
+
+```typescript
+const prompt = `Create a ${framework} component:
+
+Requirements:
+- ${description}
+- TypeScript support
+- Proper error handling
+
+Please provide:
+1. Complete component code
+2. TypeScript interfaces
+3. Usage example`;
+```
+
+## 🚀 Performance Optimization
+
+### Bun Advantages
+
+- Leverage native TypeScript support
+- Use Bun's built-in hot reload
+- Prefer Bun APIs over Node.js when available
+- Utilize fast package installation
+
+### Code Optimization
+
+- Use streaming responses when beneficial
+- Implement proper async/await patterns
+- Avoid blocking operations in MCP tools
+- Cache expensive computations
+
+## 🔄 Common Tasks & Commands
+
+### Development
+
+```bash
+bun run dev                    # Start development server
+bun test --watch               # Watch mode testing
+bun run type-check             # TypeScript validation
+bun upgrade                    # Update Bun itself
+```
+
+### Maintenance
+
+```bash
+bun update                     # Update dependencies
+bun audit                      # Security audit
+bun pm cache rm                # Clear cache
+bun run security-check         # Project security check
+```
+
+### Debugging
+
+```bash
+DEBUG=true bun run dev         # Debug mode
+bun test --reporter=verbose    # Verbose test output
+```
+
+## 🎨 UI/UX Considerations
+
+When working with generated code or components:
+
+- Prioritize accessibility (ARIA labels, semantic HTML)
+- Use modern CSS patterns (Grid, Flexbox)
+- Implement responsive design by default
+- Follow component composition patterns
+- Include loading states and error boundaries
+
+## 🔗 Integration Guidelines
+
+### MCP Client Compatibility
+
+- Use standard stdio transport
+- Follow MCP protocol specifications
+- Test with Claude Desktop configuration
+- Provide clear setup instructions
+
+### External APIs
+
+- Handle API failures gracefully
+- Implement retry logic where appropriate
+- Use environment-specific configurations
+- Log API interactions for debugging
+
+## ⚠️ Common Pitfalls to Avoid
+
+1. **Don't use npm/yarn commands** - Always use Bun
+2. **Don't ignore TypeScript errors** - Fix them immediately
+3. **Don't skip input validation** - Use Zod schemas
+4. **Don't hardcode API keys** - Use environment variables
+5. **Don't forget error handling** - Always wrap in try-catch
+6. **Don't ignore test coverage** - Maintain above 80%
+7. **Don't commit sensitive data** - Use .gitignore properly
+
+## 🎯 File Modification Guidelines
+
+### When modifying package.json:
+
+- Keep Bun engine requirement: `"bun": ">=1.2.0"`
+- Use Bun commands in scripts
+- Include performance-related keywords
+
+### When adding dependencies:
+
+- Use `bun add <package>` command
+- Prefer TypeScript-native packages
+- Check compatibility with Bun runtime
+- Update documentation if needed
+
+### When writing tests:
+
+- Place in `tests/` directory
+- Use `.test.ts` suffix
+- Include both success and error cases
+- Mock external dependencies
+
+## 🔧 Troubleshooting Quick Reference
+
+### Common Issues:
+
+1. **Build failures**: Run `bun run type-check` first
+2. **Test failures**: Check mock API key usage
+3. **Performance issues**: Profile with Bun's built-in tools
+4. **Dependency issues**: Clear cache with `bun pm cache rm`
+
+### Quick Fixes:
+
+```bash
+# Clean reinstall
+rm -rf node_modules bun.lock && bun install
+
+# Type check
+bun run type-check
+
+# Full test suite
+bun test && bun run test:coverage
+```
+
+## 📈 Success Metrics
+
+Track these metrics for project health:
+
+- Test coverage > 80%
+- TypeScript strict mode compliance
+- Bun audit security score
+- MCP tool response times
+- v0dev API quota usage efficiency
+
+---
+
+**Remember:** This project prioritizes performance (Bun), type safety (TypeScript), and developer experience (hot reload, fast tests). Always consider these factors when making changes or suggestions.
