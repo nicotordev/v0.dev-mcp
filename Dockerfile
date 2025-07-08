@@ -1,24 +1,21 @@
 # Build stage
-FROM node:20-alpine AS builder
+FROM oven/bun:1.2.18-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files and source code together
+COPY package.json ./
+COPY bun.lock ./
 COPY tsconfig.json ./
-
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Copy source code
 COPY src/ ./src/
 
-# Build the application
-RUN npm run build
+# Install dependencies and build in one step
+RUN bun install --frozen-lockfile && \
+    bun run build
 
 # Production stage
-FROM node:20-alpine AS production
+FROM oven/bun:1.2.18-alpine AS production
 
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init
@@ -30,14 +27,17 @@ RUN adduser -S nodejs -u 1001
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
-
 # Copy built application from builder stage
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+
+# Copy package files for production install
+COPY package.json ./
+COPY bun.lock ./
+
+# Install only production dependencies (skip scripts to avoid build step)
+RUN bun install --production --frozen-lockfile --ignore-scripts && \
+    bun pm cache rm && \
+    rm -rf /tmp/* /var/cache/apk/*
 
 # Copy other necessary files
 COPY --chown=nodejs:nodejs examples/ ./examples/
@@ -50,17 +50,17 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "console.log('Health check passed')" || exit 1
+  CMD bun -e "console.log('Health check passed')" || exit 1
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV NODE_OPTIONS="--max-old-space-size=1024"
+ENV BUN_ENV=production
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
 # Start the application
-CMD ["node", "dist/index.js"]
+CMD ["bun", "run", "dist/index.js"]
 
 # Metadata
 LABEL maintainer="Nicolas Torres <nicotordev@gmail.com>"
