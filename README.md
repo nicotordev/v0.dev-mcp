@@ -1,4 +1,4 @@
-# v0-mcp-ts
+# v0-mcp-ts v2.0 🚀
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
@@ -6,92 +6,104 @@
 [![Tests](https://github.com/nicotordev/v0-mcp-ts/workflows/Tests/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 [![Build](https://github.com/nicotordev/v0-mcp-ts/workflows/Build/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 
-> 🚀 **A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development**
+> � **The Ultimate Model Context Protocol (MCP) Server for AI-Powered Web Development**
 
-Transform your development workflow with AI-powered web application generation, code enhancement, debugging, and component creation through the standardized MCP protocol. **Now powered by Bun for 25x faster performance!** ⚡
+**v2.0 MAJOR UPDATE**: Now featuring **11 advanced tools**, enterprise-grade security auditing, performance optimization, database schema generation, CI/CD automation, and comprehensive testing suites!
 
-## ✨ Features
+Transform your development workflow with the most comprehensive AI-powered web development toolkit. Built with **Bun for 25x faster performance** and featuring cutting-edge v0.dev AI integration.
 
-- 🎯 **Complete Web App Generation** - Create full-stack applications with Next.js, React, Vue, Svelte
-- 🔧 **Intelligent Code Enhancement** - AI-powered code improvements and optimizations
-- 🐛 **Smart Debugging** - Automated error detection and fixes
-- 🧩 **Component Generation** - Create reusable, type-safe components
-- ⚡ **Lightning Fast** - Powered by Bun runtime (25x faster than npm)
-- 🔗 **MCP Compatible** - Works with any MCP client (Claude Desktop, Cursor, etc.)
-- 🛡️ **Type-Safe** - Full TypeScript support with Zod validation
-- 🧪 **Well Tested** - Comprehensive test suite with Vitest and coverage
+## ✨ What's New in v2.0
 
-## 🎬 Quick Demo
+### 🔧 **7 New Advanced Tools**
+- **`analyze_refactor_code`** - Deep code analysis with performance, security & maintainability insights
+- **`generate_database_schema`** - Complete database design with migrations & ORM support
+- **`generate_api_endpoints`** - Full REST/GraphQL API generation with documentation
+- **`generate_tests`** - Comprehensive test suites (unit, integration, E2E, performance, security)
+- **`generate_cicd_pipeline`** - Complete CI/CD automation for modern deployment
+- **`optimize_performance`** - Advanced performance analysis & optimization strategies
+- **`security_audit`** - Enterprise-grade security auditing with OWASP compliance
 
-```bash
-# Generate a complete Next.js e-commerce app
-mcp-tool generate_webapp --prompt "E-commerce store with shopping cart" --framework nextjs
+### 🎯 **Enhanced Core Features**
+- **Performance Tracking** - Real-time metrics and session monitoring
+- **Advanced Logging** - Color-coded, timestamped logging with performance data
+- **Enhanced Prompts** - 4 comprehensive prompt templates for complex scenarios
+- **New Resources** - Performance metrics, code templates, and enhanced documentation
+- **Stream Optimization** - Improved streaming with backpressure handling
 
-# Enhance existing code with AI
-mcp-tool enhance_code --code "function add(a,b){return a+b}" --enhancement "Add TypeScript types"
+### 📦 **New Dependencies & Libraries**
+- **Enhanced Utilities**: chalk, ora, inquirer, nanoid, date-fns, lodash
+- **Code Analysis**: markdown-it, prismjs, fast-glob
+- **Security & Validation**: helmet, validator, yaml
+- **Network & Performance**: axios, semver
 
-# Debug problematic code
-mcp-tool debug_code --code "broken code here" --error_message "TypeError: Cannot read property"
+## 🛠️ Complete Tool Arsenal (11 Tools)
 
-# Create reusable components
-mcp-tool generate_component --name "UserCard" --description "Profile card component"
-```
+### 🚀 **Core Development Tools**
+| Tool | Description | Key Features |
+|------|-------------|--------------|
+| `generate_webapp` | Complete web application generation | Next.js, React, Vue, Svelte support |
+| `enhance_code` | AI-powered code improvements | Multi-language, streaming support |
+| `debug_code` | Automated debugging and fixes | Error message analysis, solution generation |
+| `generate_component` | Reusable component creation | Props, TypeScript, framework-specific |
 
-## 📋 Prerequisites
+### 🔧 **Advanced Development Tools**
+| Tool | Description | Key Features |
+|------|-------------|--------------|
+| `analyze_refactor_code` | Deep code analysis & refactoring | Performance, security, maintainability analysis |
+| `generate_database_schema` | Database design & migrations | Prisma, Drizzle, TypeORM, MongoDB support |
+| `generate_api_endpoints` | REST/GraphQL API generation | Auth, validation, testing, documentation |
+| `generate_tests` | Comprehensive test generation | Unit, integration, E2E, performance, security |
 
-- **Bun** 1.2.0 or higher (for best performance)
-- **v0.dev API Key** (Premium or Team plan required)
+### ⚡ **DevOps & Optimization Tools**
+| Tool | Description | Key Features |
+|------|-------------|--------------|
+| `generate_cicd_pipeline` | CI/CD automation | GitHub Actions, GitLab CI, Docker, K8s |
+| `optimize_performance` | Performance optimization | Core Web Vitals, bundle analysis, caching |
+| `security_audit` | Security assessment | OWASP compliance, vulnerability scanning |
+
+## 📚 Enhanced Resources (3 Resources)
+
+### 📖 **Comprehensive Documentation**
+- **`v0-api-docs`** - Complete API documentation with all tools and best practices
+- **`performance-metrics`** - Real-time server performance and monitoring data
+- **`code-templates`** - Reusable templates and best practices in YAML format
+
+## 💡 Advanced Prompts (4 Prompts)
+
+### 🎯 **Comprehensive Project Generation**
+- **`create-webapp`** - Enhanced web app generation with complexity levels
+- **`design-database`** - Complete database design with scale considerations
+- **`create-api`** - Full-stack API development with authentication
+- **`optimize-app`** - Performance optimization strategy generation
+
+## � Quick Start
+
+### 1. Prerequisites
+- **Bun** 1.2.0+ (for optimal performance)
+- **v0.dev API Key** (Premium/Team plan)
 - **TypeScript** 5.0+
 - **MCP Client** (Claude Desktop, Cursor, etc.)
 
-### ⚡ Install Bun (if not already installed)
-
+### 2. Installation
 ```bash
-# macOS and Linux
-curl -fsSL https://bun.sh/install | bash
-
-# Windows (PowerShell)
-powershell -c "irm bun.sh/install.ps1 | iex"
-
-# Or with npm (if you have Node.js)
-npm install -g bun
-```
-
-## 🚀 Quick Start
-
-### 1. Installation
-
-```bash
+# Clone the enhanced v2.0 repository
 git clone https://github.com/nicotordev/v0-mcp-ts.git
 cd v0-mcp-ts
-bun install  # ⚡ 25x faster than npm install
-```
 
-### 2. Setup
+# Install with Bun (25x faster than npm)
+bun install
 
-```bash
+# Interactive setup
 bun run setup
 ```
 
-This interactive setup will:
-
-- Configure your v0.dev API key
-- Build the project with Bun
-- Run tests with coverage
-- Generate MCP client configuration
-
 ### 3. Configuration
-
-#### For Claude Desktop
-
-Copy the generated configuration to your Claude Desktop config:
-
 ```json
 {
   "mcpServers": {
     "v0-mcp-ts": {
       "command": "node",
-      "args": ["/absolute/path/to/v0-mcp-ts/dist/index.js"],
+      "args": ["/path/to/v0-mcp-ts/dist/index.js"],
       "env": {
         "V0_API_KEY": "your_v0_api_key_here"
       }
@@ -100,175 +112,203 @@ Copy the generated configuration to your Claude Desktop config:
 }
 ```
 
-#### For Other MCP Clients
+## 🎬 Advanced Usage Examples
 
-The server uses standard stdio transport, making it compatible with any MCP client.
-
-## 🤖 AI Editor Integration
-
-Get started quickly with these optimized configurations for AI-powered code editors:
-
-- **[Cursor AI Configuration](examples/editor-configs/cursor-config.json)** - Complete setup with YOLO mode and test-driven development
-- **[Windsurf IDE Configuration](examples/editor-configs/windsurf-config.json)** - Advanced workflows with Cascade and Flow features
-
-📖 **[Full Editor Setup Guide](examples/editor-configs/README.md)**
-
-## 🛠️ Available Tools
-
-### `generate_webapp`
-
-Create complete web applications with AI assistance.
-
-**Parameters:**
-
-- `prompt` (string) - Description of the application to generate
-- `framework` (optional) - Target framework: `nextjs`, `react`, `vue`, `svelte`
-- `features` (optional) - Array of required features
-- `stream` (optional) - Enable streaming responses
-
-**Example:**
-
+### 🔧 **Code Analysis & Refactoring**
 ```json
 {
-  "name": "generate_webapp",
+  "name": "analyze_refactor_code",
   "arguments": {
-    "prompt": "Real-time chat application with authentication",
-    "framework": "nextjs",
-    "features": ["authentication", "database", "websockets"],
-    "stream": false
+    "code": "your-code-here",
+    "analysis_type": "comprehensive",
+    "target_framework": "nextjs"
   }
 }
 ```
 
-### `enhance_code`
-
-Improve existing code with AI-powered suggestions.
-
-**Parameters:**
-
-- `code` (string) - Code to enhance
-- `enhancement` (string) - Description of desired improvements
-- `language` (optional) - Programming language (default: typescript)
-
-### `debug_code`
-
-Debug and fix code issues automatically.
-
-**Parameters:**
-
-- `code` (string) - Code with issues
-- `error_message` (optional) - Error message if available
-- `language` (optional) - Programming language (default: typescript)
-
-### `generate_component`
-
-Create reusable components with proper TypeScript types.
-
-**Parameters:**
-
-- `component_name` (string) - Name of the component
-- `description` (string) - Component functionality description
-- `framework` (optional) - Component framework: `react`, `vue`, `svelte`
-- `props` (optional) - Component props specification
-
-## 📚 Resources
-
-### `v0-api-docs`
-
-Access comprehensive v0.dev API documentation and best practices.
-
-**URI:** `v0://api-docs`
-
-## 💡 Prompts
-
-### `create-webapp`
-
-Predefined template for generating web applications with specific requirements.
-
-## 🧪 Development
-
-### Running Tests
-
-```bash
-# Run all tests (with Bun's fast test runner)
-bun test
-
-# Run tests in watch mode
-bun run test:watch
-
-# Run tests with UI
-bun run test:ui
-
-# Generate coverage report
-bun run test:coverage
+### �️ **Database Schema Generation**
+```json
+{
+  "name": "generate_database_schema",
+  "arguments": {
+    "description": "E-commerce platform with user management",
+    "database_type": "postgresql",
+    "orm": "prisma",
+    "include_seeds": true
+  }
+}
 ```
 
-### Development Mode
-
-```bash
-# Start development server with auto-reload
-bun run dev
+### 🔒 **Security Audit**
+```json
+{
+  "name": "security_audit",
+  "arguments": {
+    "project_type": "webapp",
+    "audit_scope": ["authentication", "input-validation", "api-security"],
+    "compliance_standards": ["owasp", "gdpr"]
+  }
+}
 ```
 
-### Building
-
-```bash
-# Build for production
-bun run build
-
-# Clean build artifacts
-bun run clean
+### ⚡ **Performance Optimization**
+```json
+{
+  "name": "optimize_performance",
+  "arguments": {
+    "project_type": "webapp",
+    "performance_focus": ["load-time", "runtime", "memory"],
+    "framework": "nextjs"
+  }
+}
 ```
 
-## ⚡ Bun Performance Benefits
+## 🏗️ Supported Technologies
 
-By migrating to Bun, this project now enjoys significant performance improvements:
+### **Frontend Frameworks**
+- **Next.js 14+** (App Router, Server Components, Server Actions)
+- **React 18+** (Hooks, Suspense, Concurrent Features)
+- **Vue 3+** (Composition API, Pinia, Nuxt 3)
+- **Svelte 4+** (SvelteKit, Stores)
+- **Angular 17+** (Standalone Components, Signals)
 
-- **25x faster** package installation compared to npm
-- **Native TypeScript support** without transpilation overhead
+### **Backend Technologies**
+- **Node.js** + Express/Fastify/Hono/NestJS
+- **Next.js** API Routes & Server Actions
+- **GraphQL** (Apollo, Yoga, Pothos)
+- **tRPC** for type-safe APIs
+- **Serverless** (Vercel, Netlify, AWS Lambda)
+
+### **Databases & ORMs**
+- **PostgreSQL** + Prisma/Drizzle
+- **MySQL** + TypeORM/Sequelize
+- **MongoDB** + Mongoose
+- **SQLite** for development
+- **Redis** for caching
+
+### **Testing Frameworks**
+- **Vitest** (recommended, built-in)
+- **Jest** + Testing Library
+- **Cypress** for E2E testing
+- **Playwright** for cross-browser testing
+- **Supertest** for API testing
+
+### **DevOps & Deployment**
+- **GitHub Actions** (primary)
+- **GitLab CI/CD**
+- **Docker** & Kubernetes
+- **Vercel**, Netlify, AWS, GCP, Azure
+- **Performance monitoring** & alerting
+
+## ⚡ Performance Benefits
+
+### **Bun Runtime Advantages**
+- **25x faster** package installation
+- **Native TypeScript** support without transpilation
 - **Built-in test runner** with Jest compatibility
 - **Hot reload** with native watch mode
 - **Optimized bundling** and dependency resolution
 
-### Bun Commands
+### **Enhanced Streaming**
+- **Real-time response** delivery
+- **Backpressure handling** for large outputs
+- **Memory-efficient** processing
+- **Performance tracking** with metrics
 
+## � Security Features
+
+### **Built-in Security Tools**
+- **Comprehensive audit** with OWASP Top 10 coverage
+- **Vulnerability scanning** for dependencies
+- **Authentication & authorization** analysis
+- **Input validation** with Zod schemas
+- **Security headers** and CSRF protection
+
+### **Compliance Standards**
+- **OWASP** Web Application Security
+- **GDPR** Data Protection
+- **HIPAA** Healthcare compliance
+- **PCI-DSS** Payment security
+- **SOX** Financial compliance
+
+## 🧪 Development & Testing
+
+### **Enhanced Test Suite**
 ```bash
-# Package management
-bun install              # Install dependencies
-bun add <package>        # Add dependency
-bun remove <package>     # Remove dependency
-bun update               # Update dependencies
-bun audit                # Security audit (v1.2.15+)
+# Run all tests with Bun
+bun test
 
-# Development
-bun run dev              # Development server
-bun run build            # Build project
-bun test                 # Run tests
-bun --watch src/index.ts # Watch mode
+# Run tests with coverage
+bun run test:coverage
 
-# Utilities
-bun upgrade              # Update Bun itself
-bun --version            # Check version
+# Run tests in watch mode
+bun run test:watch
+
+# Run with UI
+bun run test:ui
 ```
 
-## 🏗️ API Limits
+### **Development Commands**
+```bash
+# Development with hot reload
+bun run dev
 
-- **Daily Requests:** 200 messages per day
-- **Context Window:** 128,000 tokens
-- **Output Limit:** 32,000 tokens
-- **Plan Required:** v0.dev Premium or Team
+# Build for production
+bun run build
+
+# Type checking
+bun run type-check
+
+# Security audit
+bun run security-check
+```
+
+## 📈 Monitoring & Analytics
+
+### **Performance Metrics**
+- **Server uptime** and memory usage
+- **Tool usage** statistics
+- **Response times** and streaming performance
+- **Session tracking** and analytics
+
+### **Real-time Monitoring**
+```bash
+# Access performance metrics
+curl http://localhost:3000/performance-metrics
+
+# View server status
+bun run start --verbose
+```
+
+## 🔄 Migration from v1.0
+
+### **New Features**
+- **7 additional tools** for advanced development
+- **Enhanced streaming** with performance tracking
+- **Security auditing** capabilities
+- **Database design** automation
+- **CI/CD pipeline** generation
+
+### **Breaking Changes**
+- **Server version** updated to 2.0.0
+- **Enhanced logging** format
+- **New resource** endpoints
+- **Extended prompt** parameters
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Development Guide](DEVELOPMENT.md) for details.
+We welcome contributions to v0-mcp-ts! 
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes and add tests
-4. Ensure all tests pass: `bun test`
-5. Commit your changes: `git commit -m 'Add amazing feature'`
-6. Push to the branch: `git push origin feature/amazing-feature`
-7. Open a Pull Request
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Add tests** for new functionality
+4. **Ensure** all tests pass: `bun test`
+5. **Commit** your changes: `git commit -m 'Add amazing feature'`
+6. **Push** to branch: `git push origin feature/amazing-feature`
+7. **Open** a Pull Request
+
+### **Development Guide**
+See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed development instructions.
 
 ## 📜 License
 
@@ -277,45 +317,48 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Nicolas Torres**
+- 🌍 **Location**: Chile
+- 🐙 **GitHub**: [@nicotordev](https://github.com/nicotordev)
+- 💼 **LinkedIn**: [nicotordev](https://www.linkedin.com/in/nicotordev/)
+- 🎥 **YouTube**: [NicoTorDev Channel](https://www.youtube.com/channel/UCcOj4lCqvmND56JDz1ZMWuA)
 
-- 🌍 Location: Chile
-- 🐙 GitHub: [@nicotordev](https://github.com/nicotordev)
-- 💼 LinkedIn: [nicotordev](https://www.linkedin.com/in/nicotordev/)
-- 🎥 YouTube: [NicoTorDev Channel](https://www.youtube.com/channel/UCcOj4lCqvmND56JDz1ZMWuA)
-
-Full Stack Web Developer specializing in Node.js, React.js, Next.js, Vue.js, and modern web technologies with expertise in Bun runtime optimization.
-
-## 🔗 Links
-
-- 📖 [MCP Documentation](https://modelcontextprotocol.io/)
-- 🎨 [v0.dev API](https://vercel.com/docs/v0/api)
-- ⚡ [Bun Documentation](https://bun.sh/docs)
-- 🧠 [AI SDK](https://sdk.vercel.ai/)
-- 🏗️ [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+**Full Stack Developer** specializing in modern web technologies, AI integration, and high-performance applications with Bun runtime optimization.
 
 ## 🌟 Show Your Support
 
-If this project helped you, please give it a ⭐ on GitHub!
+If this project has helped accelerate your development workflow, please give it a ⭐ on GitHub!
 
-### 💖 Sponsor This Project
-
-Support continued development and maintenance:
+### 💖 Support Development
 
 <p align="center">
   <a href="https://github.com/sponsors/nicotordev">
-    <iframe src="https://github.com/sponsors/nicotordev/button" title="Sponsor nicotordev" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+    <img src="https://img.shields.io/badge/Sponsor-GitHub-pink?style=for-the-badge&logo=github" alt="GitHub Sponsors">
   </a>
 </p>
 
-**[Become a sponsor on GitHub](https://github.com/sponsors/nicotordev)** and help keep this project growing! Your support enables:
+**[Become a sponsor](https://github.com/sponsors/nicotordev)** and help us build the future of AI-powered development tools!
 
-- 🚀 **Continuous Development** - New features and improvements
-- 🐛 **Bug Fixes & Maintenance** - Quick responses to issues
-- 📚 **Documentation & Tutorials** - Better learning resources
-- 🤝 **Community Support** - Help other developers succeed
+Your support enables:
+- 🚀 **Continuous innovation** with new tools and features
+- 🐛 **Rapid bug fixes** and issue resolution
+- 📚 **Enhanced documentation** and tutorials
+- 🤝 **Community support** and developer success
+- 🔬 **Research & development** of cutting-edge features
+
+## 🔗 Links
+
+- 📖 **[MCP Documentation](https://modelcontextprotocol.io/)**
+- 🎨 **[v0.dev API](https://vercel.com/docs/v0/api)**
+- ⚡ **[Bun Documentation](https://bun.sh/docs)**
+- 🧠 **[AI SDK](https://sdk.vercel.ai/)**
+- 🏗️ **[TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)**
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by <a href="https://github.com/nicotordev">Nicolas Torres</a> in Chile 🇨🇱</sub>
+  <sub>Built with ❤️ and ⚡ Bun by <a href="https://github.com/nicotordev">Nicolas Torres</a> in Chile 🇨🇱</sub>
+</p>
+
+<p align="center">
+  <sub>v2.0.0 - The Ultimate AI-Powered Development Toolkit</sub>
 </p>
