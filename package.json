@@ -83,9 +83,11 @@
     "@modelcontextprotocol/sdk": "^1.15.0",
     "@vitest/coverage-v8": "^3.2.4",
     "ai": "^4.3.17",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.1.0",
     "node-fetch": "^3.3.2",
     "ws": "^8.18.3",
+    "yaml": "^2.8.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
