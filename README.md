@@ -5,6 +5,7 @@
 [![Bun](https://img.shields.io/badge/Bun-1.2+-black.svg)](https://bun.sh/)
 [![Tests](https://github.com/nicotordev/v0-mcp-ts/workflows/Tests/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 [![Build](https://github.com/nicotordev/v0-mcp-ts/workflows/Build/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
+[![smithery badge](https://smithery.ai/badge/@nicotordev/v0-dev-mcp)](https://smithery.ai/server/@nicotordev/v0-dev-mcp)
 
 > 🚀 **A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development**
 
@@ -58,6 +59,14 @@ npm install -g bun
 ```
 
 ## 🚀 Quick Start
+
+### Installing via Smithery
+
+To install v0-dev-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@nicotordev/v0-dev-mcp):
+
+```bash
+npx -y @smithery/cli install @nicotordev/v0-dev-mcp --client claude
+```
 
 ### 1. Installation
 
