@@ -29,7 +29,7 @@ export const componentRefactorSchema = z.object({
     .default(["performance", "maintainability", "modern-patterns"])
     .describe("Refactoring goals and focus areas"),
   target_framework: z
-    .enum(["react", "next", "remix", "gatsby"])
+    .enum(["react", "next"])
     .optional()
     .default("react")
     .describe("Target React framework"),
