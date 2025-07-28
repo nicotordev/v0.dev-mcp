@@ -20,11 +20,12 @@ export default {
   metadata: {
     name: 'v0-mcp-ts',
     displayName: 'v0.dev MCP Server',
-    description: 'A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development. Powered by Bun for 25x faster performance.',
-    version: '1.0.0',
+    description: '🚀 A high-performance Model Context Protocol server that integrates v0.dev AI capabilities for modern web development. Generate React components, audit accessibility, create Tailwind layouts, and debug code with AI assistance. Powered by Node.js LTS and optimized for production use.',
+    version: '2.0.0',
     author: 'Nicolas Torres <nicotordev@gmail.com>',
-    homepage: 'https://github.com/nicotordev/v0-mcp-ts',
-    repository: 'https://github.com/nicotordev/v0-mcp-ts.git',
+    organization: 'Conce-AI',
+    homepage: 'https://github.com/Conce-AI/v0.dev',
+    repository: 'https://github.com/Conce-AI/v0.dev.git',
     license: 'MIT',
     keywords: [
       'mcp',
