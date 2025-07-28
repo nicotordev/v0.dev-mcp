@@ -28,10 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     
-    strategy:
-      matrix:
-        node-version: [18, 20, 22]
-      fail-fast: false
+
 
     steps:
       # ─────────────────────────────────────────────
@@ -46,11 +43,7 @@ jobs:
         with:
           bun-version: latest # Ensure we get v1.2.15+ for bun audit support
 
-      - name: 🔧 Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+
 
       # ─────────────────────────────────────────────
       - name: 📥 Install dependencies
@@ -207,7 +200,7 @@ jobs:
           fail_ci_if_error: false
           verbose: true
           flags: unittests
-          name: codecov-${{ matrix.node-version }}
+          name: codecov-bun
         if: success() || failure() # Upload even if tests fail
 
       # ─────────────────────────────────────────────
@@ -291,7 +284,7 @@ jobs:
       - name: 💾 Archive build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts-node-${{ matrix.node-version }}
+           name: build-artifacts-bun
           path: |
             dist/
             coverage/
@@ -301,7 +294,7 @@ jobs:
       - name: 💾 Archive test results
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-node-${{ matrix.node-version }}
+                     name: test-results-bun
           path: |
             coverage/
             test-results.xml
