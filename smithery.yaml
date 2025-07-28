@@ -107,3 +107,23 @@ tags:
   - shadcn
   - typescript
   - debugging
+=======
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'bun', args: ['run', 'dist/index.js'], env: { V0_API_KEY: config.v0ApiKey } })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - v0ApiKey
+    properties:
+      v0ApiKey:
+        type: string
+        description: Your v0.dev API key used to authenticate with the v0.dev AI service
+  exampleConfig:
+    v0ApiKey: pk_test_1234567890abcdef

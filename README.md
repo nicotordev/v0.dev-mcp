@@ -5,6 +5,7 @@
 [![Bun](https://img.shields.io/badge/Bun-1.2+-black.svg)](https://bun.sh/)
 [![Tests](https://github.com/nicotordev/v0-mcp-ts/workflows/Tests/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 [![Build](https://github.com/nicotordev/v0-mcp-ts/workflows/Build/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
+[![smithery badge](https://smithery.ai/badge/@nicotordev/v0-dev-mcp)](https://smithery.ai/server/@nicotordev/v0-dev-mcp)
 
 > The Ultimate Model Context Protocol (MCP) Server for AI-Powered Web Development, designed to bridge the gap between **design** and **code**.
 
@@ -68,6 +69,14 @@ Use these prompts to guide the AI in generating exactly what you need:
 - **Bun** v1.2.0+
 - **v0.dev API Key**
 - An MCP Client (e.g., Cursor)
+=======
+### Installing via Smithery
+
+To install v0-dev-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@nicotordev/v0-dev-mcp):
+
+```bash
+npx -y @smithery/cli install @nicotordev/v0-dev-mcp --client claude
+```
 
 ### 2. Installation
 ```bash
