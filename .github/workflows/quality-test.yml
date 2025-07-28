@@ -25,5 +25,5 @@ jobs:
           bun run test:run
           bun run build
         env:
-          V0_API_KEY: ${{ secrets.V0_API_KEY || 'test-mock-key-12345' }}
+          V0_API_KEY: test-mock-key-12345
           NODE_ENV: test

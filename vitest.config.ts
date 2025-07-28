@@ -5,9 +5,9 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
-    testTimeout: 30000, // 30 seconds for MCP server tests
-    hookTimeout: 10000,
-    teardownTimeout: 10000,
+    testTimeout: 10000, // 10 seconds max
+    hookTimeout: 5000,
+    teardownTimeout: 5000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
