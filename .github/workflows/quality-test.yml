@@ -2,7 +2,9 @@ name: 🧪 Quality & Testing Suite
 
 on:
   push:
-    branches: [main, develop, major_update]
+    branches-ignore:
+      - 'renovate/**'
+      - 'dependabot/**'
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
