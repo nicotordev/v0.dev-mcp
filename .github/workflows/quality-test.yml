@@ -12,7 +12,7 @@ on:
       run_integration_tests:
         description: 'Run integration tests (requires V0_API_KEY)'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 env:
@@ -175,7 +175,7 @@ jobs:
         timeout-minutes: 10
 
       - name: 🧪 Run integration tests (optional)
-        if: ${{ github.event.inputs.run_integration_tests == 'true' && secrets.V0_API_KEY != '' }}
+        if: ${{ github.event.inputs.run_integration_tests == true && secrets.V0_API_KEY != '' }}
         run: |
           echo "Running full integration tests with API calls..."
           echo "⚠️ This may take longer and consume API quota"
