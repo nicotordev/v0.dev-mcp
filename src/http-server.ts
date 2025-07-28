@@ -4,8 +4,6 @@
  * Implements Streamable HTTP protocol requirements
  */
 
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
 
@@ -113,7 +111,7 @@ const server = createServer(async (req, res) => {
             const mcpRequest = JSON.parse(body);
             
             // Create MCP server instance
-            const mcpServer = await createMCPServer();
+            await createMCPServer();
             
             // Process the request (simplified - in practice you'd need proper transport)
             res.writeHead(200, { 'Content-Type': 'application/json' });
