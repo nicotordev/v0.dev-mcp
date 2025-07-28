@@ -175,11 +175,17 @@ jobs:
         timeout-minutes: 10
 
       - name: 🧪 Run integration tests (optional)
-        if: ${{ github.event.inputs.run_integration_tests == true && secrets.V0_API_KEY != '' }}
+        if: ${{ github.event.inputs.run_integration_tests == 'true' }}
         run: |
-          echo "Running full integration tests with API calls..."
-          echo "⚠️ This may take longer and consume API quota"
-          bun test tests/tools.test.ts --run --timeout 30000
+          if [ -n "${{ secrets.V0_API_KEY }}" ]; then
+            echo "Running full integration tests with API calls..."
+            echo "⚠️ This may take longer and consume API quota"
+            bun test tests/tools.test.ts --run --timeout 30000
+          else
+            echo "⚠️ Skipping integration tests - V0_API_KEY not available"
+            echo "To run integration tests, add V0_API_KEY to repository secrets"
+            exit 0
+          fi
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
         timeout-minutes: 15
