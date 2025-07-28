@@ -57,7 +57,11 @@ export default {
       'tailwind',
       'shadcn',
       'typescript',
-      'debugging'
+      'debugging',
+      'conce-ai',
+      'production-ready',
+      'nodejs-lts',
+      'design-tools'
     ]
   },
   environment: {
