@@ -1,99 +1,259 @@
+# =============================================================================
+# Docker Compose for v0-mcp-ts
+# Comprehensive setup for development, testing, and production environments
+# =============================================================================
+
 version: '3.8'
 
+# -----------------------------------------------------------------------------
+# Services
+# -----------------------------------------------------------------------------
 services:
+  # Production MCP Server
   v0-mcp-ts:
     build:
       context: .
       dockerfile: Dockerfile
       target: production
-    container_name: v0-mcp-ts
+      args:
+        - NODE_ENV=production
+    image: v0-mcp-ts:latest
+    container_name: v0-mcp-ts-prod
     restart: unless-stopped
+    
     environment:
       - NODE_ENV=production
+      - BUN_ENV=production
       - V0_API_KEY=${V0_API_KEY}
       - DEBUG=${DEBUG:-false}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - PORT=3000
+    
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    
     volumes:
-      # Mount configuration files (optional)
+      # Mount configuration files (read-only)
       - ./examples:/app/examples:ro
-      # Mount logs directory (optional)
-      - ./logs:/app/logs
+      # Mount logs directory for persistent logging
+      - v0-logs:/app/logs
+      # Mount cache directory for better performance
+      - v0-cache:/app/.cache
+    
     networks:
-      - v0-mcp-network
+      - v0-network
+    
+    # Enhanced health check
     healthcheck:
-      test: ['CMD', 'node', '-e', "console.log('Health check passed')"]
+      test: ['CMD', 'bun', '-e', 'process.exit(0)']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Read-only root filesystem for security
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=100m
+    
     labels:
       - 'com.nicotordev.project=v0-mcp-ts'
       - 'com.nicotordev.environment=production'
+      - 'com.nicotordev.version=2.0.0'
 
-  # Development service
+  # Development Environment
   v0-mcp-ts-dev:
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder
+      target: development
+      args:
+        - NODE_ENV=development
+    image: v0-mcp-ts:dev
     container_name: v0-mcp-ts-dev
     restart: unless-stopped
+    
     environment:
       - NODE_ENV=development
-      - V0_API_KEY=${V0_API_KEY}
+      - BUN_ENV=development
+      - V0_API_KEY=${V0_API_KEY:-test-mock-key-12345}
       - DEBUG=true
+      - LOG_LEVEL=debug
+      - PORT=3000
+      - ENABLE_PERFORMANCE_TRACKING=true
+    
     volumes:
-      # Mount source code for development
-      - ./src:/app/src
-      - ./tests:/app/tests
-      - ./package.json:/app/package.json
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./vitest.config.ts:/app/vitest.config.ts
-      # Mount node_modules to persist between runs
-      - node_modules:/app/node_modules
+      # Mount source code for hot reload
+      - ./src:/app/src:cached
+      - ./tests:/app/tests:cached
+      - ./package.json:/app/package.json:cached
+      - ./tsconfig.json:/app/tsconfig.json:cached
+      - ./vitest.config.ts:/app/vitest.config.ts:cached
+      - ./.env.development:/app/.env:ro
+      # Persist node_modules between runs
+      - v0-node-modules:/app/node_modules
+      # Development logs
+      - v0-dev-logs:/app/logs
+    
+    ports:
+      - '${DEV_PORT:-3001}:3000'
+      - '${DEBUG_PORT:-9229}:9229' # Debug port for VS Code
+    
     working_dir: /app
-    command: npm run dev
+    command: bun run dev
+    
     networks:
-      - v0-mcp-network
+      - v0-network
+    
     profiles:
       - development
+    
     labels:
       - 'com.nicotordev.project=v0-mcp-ts'
       - 'com.nicotordev.environment=development'
 
-  # Testing service
-  test:
+  # Testing Environment
+  v0-mcp-ts-test:
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder
+      target: development
+      args:
+        - NODE_ENV=test
+    image: v0-mcp-ts:test
     container_name: v0-mcp-ts-test
+    
     environment:
       - NODE_ENV=test
+      - BUN_ENV=test
       - V0_API_KEY=test-mock-key-12345
+      - DEBUG=false
+      - LOG_LEVEL=error
+      - CI=true
+    
     volumes:
-      - ./src:/app/src
-      - ./tests:/app/tests
-      - ./package.json:/app/package.json
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./vitest.config.ts:/app/vitest.config.ts
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./package.json:/app/package.json:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./vitest.config.ts:/app/vitest.config.ts:ro
+      # Mount coverage output
       - ./coverage:/app/coverage
+      # Test results
+      - ./test-results:/app/test-results
+    
     working_dir: /app
-    command: npm run test:run
+    command: bun run test:coverage
+    
     networks:
-      - v0-mcp-network
+      - v0-network
+    
     profiles:
       - testing
+    
     labels:
       - 'com.nicotordev.project=v0-mcp-ts'
       - 'com.nicotordev.environment=test'
 
-networks:
-  v0-mcp-network:
-    driver: bridge
+  # CI/CD Test Runner (for GitHub Actions)
+  v0-mcp-ts-ci:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        - NODE_ENV=test
+    image: v0-mcp-ts:ci
+    container_name: v0-mcp-ts-ci
+    
+    environment:
+      - NODE_ENV=test
+      - BUN_ENV=test
+      - V0_API_KEY=test-mock-key-12345
+      - DEBUG=false
+      - LOG_LEVEL=error
+      - CI=true
+      - ENABLE_PERFORMANCE_TRACKING=false
+    
+    volumes:
+      - .:/app:ro
+      - ./coverage:/app/coverage
+      - ./test-results:/app/test-results
+    
+    working_dir: /app
+    command: |
+      sh -c "
+        echo 'Running CI test suite...' &&
+        bun run type-check &&
+        bun run test:run &&
+        bun run build &&
+        echo 'CI tests completed successfully!'
+      "
+    
+    networks:
+      - v0-network
+    
+    profiles:
+      - ci
+    
     labels:
       - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.environment=ci'
 
-volumes:
-  node_modules:
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  v0-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: v0-mcp-bridge
     labels:
       - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.type=network'
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  # Production logs
+  v0-logs:
+    driver: local
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.type=logs'
+      - 'com.nicotordev.environment=production'
+
+  # Development logs  
+  v0-dev-logs:
+    driver: local
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.type=logs'
+      - 'com.nicotordev.environment=development'
+
+  # Node modules cache for development
+  v0-node-modules:
+    driver: local
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.type=cache'
+      - 'com.nicotordev.environment=development'
+
+  # Application cache
+  v0-cache:
+    driver: local
+    labels:
+      - 'com.nicotordev.project=v0-mcp-ts'
+      - 'com.nicotordev.type=cache'

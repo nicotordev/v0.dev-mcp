@@ -29,12 +29,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicotordev/v0-mcp-ts.git"
+    "url": "https://github.com/Conce-AI/v0.dev.git"
   },
   "bugs": {
-    "url": "https://github.com/nicotordev/v0-mcp-ts/issues"
+    "url": "https://github.com/Conce-AI/v0.dev/issues"
   },
-  "homepage": "https://github.com/nicotordev/v0-mcp-ts#readme",
+  "homepage": "https://github.com/Conce-AI/v0.dev#readme",
   "license": "MIT",
   "files": [
     "dist/",
