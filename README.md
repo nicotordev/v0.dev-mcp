@@ -3,9 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-1.2+-black.svg)](https://bun.sh/)
-[![Tests](https://github.com/nicotordev/v0-mcp-ts/workflows/Tests/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
-[![Build](https://github.com/nicotordev/v0-mcp-ts/workflows/Build/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
-[![smithery badge](https://smithery.ai/badge/@nicotordev/v0-dev-mcp)](https://smithery.ai/server/@nicotordev/v0-dev-mcp)
+[![Tests](https://github.com/Conce-AI/v0.dev/workflows/Tests/badge.svg)](https://github.com/Conce-AI/v0.dev/actions)
+[![Build](https://github.com/Conce-AI/v0.dev/workflows/Build/badge.svg)](https://github.com/Conce-AI/v0.dev/actions)
+[![smithery badge](https://smithery.ai/badge/@Conce-AI/v0-dev)](https://smithery.ai/server/@Conce-AI/v0-dev)
 
 > The Ultimate Model Context Protocol (MCP) Server for AI-Powered Web Development, designed to bridge the gap between **design** and **code**.
 
@@ -14,7 +14,7 @@
 This server is your copilot for turning ideas into beautiful, functional, and accessible user interfaces.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/nicotordev/v0-mcp-ts/main/assets/v0-mcp-ts-demo.png" alt="v0-mcp-ts Demo" width="800">
+  <img src="https://raw.githubusercontent.com/Conce-AI/v0.dev/main/assets/v0-mcp-ts-demo.png" alt="v0-mcp-ts Demo" width="800">
 </p>
 
 ---
@@ -81,7 +81,7 @@ npx -y @smithery/cli install @nicotordev/v0-dev-mcp --client claude
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/nicotordev/v0-mcp-ts.git
+git clone https://github.com/Conce-AI/v0.dev.git
 cd v0-mcp-ts
 
 # Install dependencies with Bun
@@ -224,5 +224,5 @@ If this project helps you build amazing things, please give it a ⭐ on GitHub!
 ---
 
 <p align="center">
-  <sub>Built with ❤️ and ⚡ Bun by <a href="https://github.com/nicotordev">Nicolas Torres</a> in Chile 🇨🇱</sub>
+  <sub>Built with ❤️ and ⚡ Bun by <a href="https://github.com/nicotordev">Nicolas Torres</a> and Conce AI L.L.C. in Chile 🇨🇱</sub>
 </p>
