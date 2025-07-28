@@ -38,8 +38,15 @@ export default {
       'code-generation',
       'component-generation',
       'debugging',
-      'bun',
-      'performance'
+      'nodejs',
+      'performance',
+      'conce-ai',
+      'chile',
+      'nicotordev',
+      'tailwindcss',
+      'shadcn',
+      'accessibility',
+      'react'
     ],
     tags: [
       'ai-tools',
