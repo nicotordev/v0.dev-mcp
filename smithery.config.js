@@ -3,9 +3,10 @@ export default {
   entry: 'dist/index.js',
   transport: 'stdio',
   build: {
-    outFile: '.smithery/index.cjs',
+    outFile: '.smithery/index.mjs',
     bundle: true,
     minify: false,
+    format: 'esm',
     external: [
       '@modelcontextprotocol/sdk',
       'node:*',

@@ -53,7 +53,7 @@
   },
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target node",
+    "build": "bun build src/index.ts --outdir dist --target node --format esm",
     "start": "bun run dist/index.js",
     "start:bun": "bun run dist/index.js",
     "clean": "rm -rf dist coverage",
