@@ -226,3 +226,7 @@ If this project helps you build amazing things, please give it a ⭐ on GitHub!
 <p align="center">
   <sub>Built with ❤️ and ⚡ Bun by <a href="https://github.com/nicotordev">Nicolas Torres</a> and Conce AI L.L.C. in Chile 🇨🇱</sub>
 </p>
+
+---
+
+**Note on Legal Entities:** Conce AI L.L.C. is a US-based company, while Conce AI spA is the Chilean entity.
