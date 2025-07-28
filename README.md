@@ -7,59 +7,69 @@
 [![Build](https://github.com/nicotordev/v0-mcp-ts/workflows/Build/badge.svg)](https://github.com/nicotordev/v0-mcp-ts/actions)
 [![smithery badge](https://smithery.ai/badge/@nicotordev/v0-dev-mcp)](https://smithery.ai/server/@nicotordev/v0-dev-mcp)
 
-> 🚀 **A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development**
+> The Ultimate Model Context Protocol (MCP) Server for AI-Powered Web Development, designed to bridge the gap between **design** and **code**.
 
-Transform your development workflow with AI-powered web application generation, code enhancement, debugging, and component creation through the standardized MCP protocol. **Now powered by Bun for 25x faster performance!** ⚡
+**v0-mcp-ts** is a powerful, high-performance MCP server built with **Bun** and **TypeScript**. It integrates directly with **v0.dev**, a generative UI platform by **Vercel**, to bring AI-powered design and development to your workflow. Seamlessly generate UI from text prompts, iterate on designs like you would in Figma, and get production-ready code for modern web frameworks.
 
-## ✨ Features
+This server is your copilot for turning ideas into beautiful, functional, and accessible user interfaces.
 
-- 🎯 **Complete Web App Generation** - Create full-stack applications with Next.js, React, Vue, Svelte
-- 🔧 **Intelligent Code Enhancement** - AI-powered code improvements and optimizations
-- 🐛 **Smart Debugging** - Automated error detection and fixes
-- 🧩 **Component Generation** - Create reusable, type-safe components
-- ⚡ **Lightning Fast** - Powered by Bun runtime (25x faster than npm)
-- 🔗 **MCP Compatible** - Works with any MCP client (Claude Desktop, Cursor, etc.)
-- 🛡️ **Type-Safe** - Full TypeScript support with Zod validation
-- 🧪 **Well Tested** - Comprehensive test suite with Vitest and coverage
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nicotordev/v0-mcp-ts/main/assets/v0-mcp-ts-demo.png" alt="v0-mcp-ts Demo" width="800">
+</p>
 
-## 🎬 Quick Demo
+---
 
-```bash
-# Generate a complete Next.js e-commerce app
-mcp-tool generate_webapp --prompt "E-commerce store with shopping cart" --framework nextjs
+## ✨ Key Features
 
-# Enhance existing code with AI
-mcp-tool enhance_code --code "function add(a,b){return a+b}" --enhancement "Add TypeScript types"
+- **🚀 High-Performance**: Built on **Bun**, providing a 25x faster development experience.
+- **🎨 Design-to-Code**: Leverages **v0.dev** to generate UI from text prompts and design iterations.
+- **🧩 Component Generation**: Create reusable components for **React**, **Vue**, **Svelte**, and more.
+- **💅 Styling & Theming**: Generate Tailwind CSS layouts and CSS-in-JS themes.
+- **♿ Accessibility Audits**: Ensure your components are WCAG compliant.
+- **🔧 Code Refactoring**: Improve existing components with AI-powered suggestions.
+- **✅ Type-Safe**: Written in **TypeScript** with strict type checking using **Zod**.
+- **🧪 Comprehensive Testing**: Includes a full suite of tests with **Vitest**.
 
-# Debug problematic code
-mcp-tool debug_code --code "broken code here" --error_message "TypeError: Cannot read property"
+---
 
-# Create reusable components
-mcp-tool generate_component --name "UserCard" --description "Profile card component"
-```
+## 🛠️ Tools Arsenal
 
-## 📋 Prerequisites
+This MCP server comes packed with a suite of tools to supercharge your development process:
 
-- **Bun** 1.2.0 or higher (for best performance)
-- **v0.dev API Key** (Premium or Team plan required)
-- **TypeScript** 5.0+
-- **MCP Client** (Claude Desktop, Cursor, etc.)
+| Tool                         | Description                                            | Key Features                                          |
+| ---------------------------- | ------------------------------------------------------ | ----------------------------------------------------- |
+| `generate_component`         | Complete web component generation                      | React, Vue, Svelte support, TypeScript, Props         |
+| `generate_shadcn_component`  | Create components using the shadcn/ui library          | Leverages shadcn/ui primitives, variants, custom CSS  |
+| `generate_tailwind_layout`   | Generate responsive layouts with Tailwind CSS          | Sidebar, Header/Footer, Grid, Flex, Dark Mode         |
+| `generate_css_theme`         | Design accessible CSS themes                           | WCAG AA compliance, CSS Vars, Tailwind Config         |
+| `refactor_component`         | Refactor components with best practices                | Performance, Accessibility, Typing, Modern Patterns   |
+| `audit_accessibility`        | Comprehensive accessibility audit for your code        | WCAG compliance, screen-reader, keyboard navigation |
 
-### ⚡ Install Bun (if not already installed)
+---
 
-```bash
-# macOS and Linux
-curl -fsSL https://bun.sh/install | bash
+## 💡 Prompts for Every Need
 
-# Windows (PowerShell)
-powershell -c "irm bun.sh/install.ps1 | iex"
+Use these prompts to guide the AI in generating exactly what you need:
 
-# Or with npm (if you have Node.js)
-npm install -g bun
-```
+| Prompt                       | Description                                         | Use Case                                                    |
+| ---------------------------- | --------------------------------------------------- | ----------------------------------------------------------- |
+| `component-generator`        | Generate React components with TypeScript           | Create new UI components from scratch.                      |
+| `shadcn-component-generator` | Generate components using shadcn/ui                 | Build complex UIs with a trusted component library.         |
+| `tailwind-layout-generator`  | Generate responsive layouts with Tailwind CSS       | Scaffold page layouts and responsive designs.               |
+| `css-theme-generator`        | Generate accessible CSS themes                      | Create a consistent design system and color palette.        |
+| `component-refactor`         | Refactor React components with best practices       | Improve code quality, performance, and accessibility.       |
+| `accessibility-auditor`      | Comprehensive accessibility audit tool              | Ensure your application is usable by everyone.              |
+| `webapp-generator`           | Generate complete web applications                  | Kickstart a new project with a solid foundation.            |
+
+---
 
 ## 🚀 Quick Start
 
+### 1. Prerequisites
+- **Bun** v1.2.0+
+- **v0.dev API Key**
+- An MCP Client (e.g., Cursor)
+=======
 ### Installing via Smithery
 
 To install v0-dev-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@nicotordev/v0-dev-mcp):
@@ -68,263 +78,151 @@ To install v0-dev-mcp for Claude Desktop automatically via [Smithery](https://sm
 npx -y @smithery/cli install @nicotordev/v0-dev-mcp --client claude
 ```
 
-### 1. Installation
-
+### 2. Installation
 ```bash
+# Clone the repository
 git clone https://github.com/nicotordev/v0-mcp-ts.git
 cd v0-mcp-ts
-bun install  # ⚡ 25x faster than npm install
-```
 
-### 2. Setup
+# Install dependencies with Bun
+bun install
 
-```bash
+# Run the interactive setup
 bun run setup
 ```
 
-This interactive setup will:
-
-- Configure your v0.dev API key
-- Build the project with Bun
-- Run tests with coverage
-- Generate MCP client configuration
-
 ### 3. Configuration
 
-#### For Claude Desktop
+Configure your MCP client to connect to the server. Here's an example for Cursor:
 
-Copy the generated configuration to your Claude Desktop config:
-
-```json
+```jsonc
+// settings.json
 {
-  "mcpServers": {
+  "mcp.servers": {
     "v0-mcp-ts": {
-      "command": "node",
-      "args": ["/absolute/path/to/v0-mcp-ts/dist/index.js"],
+      "command": "bun",
+      "args": ["run", "dev"],
+      "cwd": "/path/to/your/v0-mcp-ts",
       "env": {
-        "V0_API_KEY": "your_v0_api_key_here"
+        "V0_API_KEY": "your-v0-api-key"
       }
     }
   }
 }
 ```
 
-#### For Other MCP Clients
+---
 
-The server uses standard stdio transport, making it compatible with any MCP client.
+## 🎬 Usage Examples
 
-## 🤖 AI Editor Integration
-
-Get started quickly with these optimized configurations for AI-powered code editors:
-
-- **[Cursor AI Configuration](examples/editor-configs/cursor-config.json)** - Complete setup with YOLO mode and test-driven development
-- **[Windsurf IDE Configuration](examples/editor-configs/windsurf-config.json)** - Advanced workflows with Cascade and Flow features
-
-📖 **[Full Editor Setup Guide](examples/editor-configs/README.md)**
-
-## 🛠️ Available Tools
-
-### `generate_webapp`
-
-Create complete web applications with AI assistance.
-
-**Parameters:**
-
-- `prompt` (string) - Description of the application to generate
-- `framework` (optional) - Target framework: `nextjs`, `react`, `vue`, `svelte`
-- `features` (optional) - Array of required features
-- `stream` (optional) - Enable streaming responses
-
-**Example:**
+### Generate a new Component
 
 ```json
 {
-  "name": "generate_webapp",
+  "tool": "generate_component",
   "arguments": {
-    "prompt": "Real-time chat application with authentication",
-    "framework": "nextjs",
-    "features": ["authentication", "database", "websockets"],
-    "stream": false
+    "component_name": "UserProfileCard",
+    "component_description": "A card to display user information with an avatar, name, and bio.",
+    "theme": "dark",
+    "styling_system": "tailwind"
   }
 }
 ```
 
-### `enhance_code`
+### Refactor an existing Component
 
-Improve existing code with AI-powered suggestions.
+```json
+{
+  "tool": "refactor_component",
+  "arguments": {
+    "code": "/* your existing component code here */",
+    "focus_areas": "performance,accessibility"
+  }
+}
+```
 
-**Parameters:**
+### Audit for Accessibility
 
-- `code` (string) - Code to enhance
-- `enhancement` (string) - Description of desired improvements
-- `language` (optional) - Programming language (default: typescript)
+```json
+{
+  "tool": "audit_accessibility",
+  "arguments": {
+    "code": "/* your JSX/HTML code here */",
+    "audit_level": "wcag-aa"
+  }
+}
+```
 
-### `debug_code`
+---
 
-Debug and fix code issues automatically.
+## 🏗️ Supported Technologies
 
-**Parameters:**
+- **Frontend Frameworks**: Next.js, React, Vue, Svelte, Angular
+- **Styling**: Tailwind CSS, CSS Modules, Styled Components, Emotion
+- **Testing**: Vitest, Jest, Cypress, Playwright
 
-- `code` (string) - Code with issues
-- `error_message` (optional) - Error message if available
-- `language` (optional) - Programming language (default: typescript)
+---
 
-### `generate_component`
-
-Create reusable components with proper TypeScript types.
-
-**Parameters:**
-
-- `component_name` (string) - Name of the component
-- `description` (string) - Component functionality description
-- `framework` (optional) - Component framework: `react`, `vue`, `svelte`
-- `props` (optional) - Component props specification
-
-## 📚 Resources
-
-### `v0-api-docs`
-
-Access comprehensive v0.dev API documentation and best practices.
-
-**URI:** `v0://api-docs`
-
-## 💡 Prompts
-
-### `create-webapp`
-
-Predefined template for generating web applications with specific requirements.
-
-## 🧪 Development
-
-### Running Tests
+## 🧪 Development & Testing
 
 ```bash
-# Run all tests (with Bun's fast test runner)
+# Run development server with hot reload
+bun run dev
+
+# Run all tests
 bun test
 
-# Run tests in watch mode
-bun run test:watch
-
-# Run tests with UI
-bun run test:ui
-
-# Generate coverage report
+# Run tests with coverage report
 bun run test:coverage
+
+# Type-check the codebase
+bun run type-check
 ```
 
-### Development Mode
-
-```bash
-# Start development server with auto-reload
-bun run dev
-```
-
-### Building
-
-```bash
-# Build for production
-bun run build
-
-# Clean build artifacts
-bun run clean
-```
-
-## ⚡ Bun Performance Benefits
-
-By migrating to Bun, this project now enjoys significant performance improvements:
-
-- **25x faster** package installation compared to npm
-- **Native TypeScript support** without transpilation overhead
-- **Built-in test runner** with Jest compatibility
-- **Hot reload** with native watch mode
-- **Optimized bundling** and dependency resolution
-
-### Bun Commands
-
-```bash
-# Package management
-bun install              # Install dependencies
-bun add <package>        # Add dependency
-bun remove <package>     # Remove dependency
-bun update               # Update dependencies
-bun audit                # Security audit (v1.2.15+)
-
-# Development
-bun run dev              # Development server
-bun run build            # Build project
-bun test                 # Run tests
-bun --watch src/index.ts # Watch mode
-
-# Utilities
-bun upgrade              # Update Bun itself
-bun --version            # Check version
-```
-
-## 🏗️ API Limits
-
-- **Daily Requests:** 200 messages per day
-- **Context Window:** 128,000 tokens
-- **Output Limit:** 32,000 tokens
-- **Plan Required:** v0.dev Premium or Team
+---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Development Guide](DEVELOPMENT.md) for details.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes and add tests
-4. Ensure all tests pass: `bun test`
-5. Commit your changes: `git commit -m 'Add amazing feature'`
-6. Push to the branch: `git push origin feature/amazing-feature`
-7. Open a Pull Request
+1. **Fork** the repository.
+2. Create a new feature branch: `git checkout -b feature/your-amazing-feature`
+3. Commit your changes: `git commit -m 'Add some amazing feature'`
+4. Push to the branch: `git push origin feature/your-amazing-feature`
+5. Open a **Pull Request**.
+
+---
 
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
+
 ## 👨‍💻 Author
 
 **Nicolas Torres**
+- 🌍 **Location**: Chile
+- 🐙 **GitHub**: [@nicotordev](https://github.com/nicotordev)
+- 💼 **LinkedIn**: [nicotordev](https://www.linkedin.com/in/nicotordev/)
+- 🎥 **YouTube**: [NicoTorDev Channel](https://www.youtube.com/channel/UCcOj4lCqvmND56JDz1ZMWuA)
 
-- 🌍 Location: Chile
-- 🐙 GitHub: [@nicotordev](https://github.com/nicotordev)
-- 💼 LinkedIn: [nicotordev](https://www.linkedin.com/in/nicotordev/)
-- 🎥 YouTube: [NicoTorDev Channel](https://www.youtube.com/channel/UCcOj4lCqvmND56JDz1ZMWuA)
+A Full Stack Developer from Chile, passionate about modern web technologies, AI integration, and building high-performance applications.
 
-Full Stack Web Developer specializing in Node.js, React.js, Next.js, Vue.js, and modern web technologies with expertise in Bun runtime optimization.
-
-## 🔗 Links
-
-- 📖 [MCP Documentation](https://modelcontextprotocol.io/)
-- 🎨 [v0.dev API](https://vercel.com/docs/v0/api)
-- ⚡ [Bun Documentation](https://bun.sh/docs)
-- 🧠 [AI SDK](https://sdk.vercel.ai/)
-- 🏗️ [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+---
 
 ## 🌟 Show Your Support
 
-If this project helped you, please give it a ⭐ on GitHub!
-
-### 💖 Sponsor This Project
-
-Support continued development and maintenance:
+If this project helps you build amazing things, please give it a ⭐ on GitHub!
 
 <p align="center">
   <a href="https://github.com/sponsors/nicotordev">
-    <iframe src="https://github.com/sponsors/nicotordev/button" title="Sponsor nicotordev" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+    <img src="https://img.shields.io/badge/Sponsor-GitHub-pink?style=for-the-badge&logo=github" alt="GitHub Sponsors">
   </a>
 </p>
-
-**[Become a sponsor on GitHub](https://github.com/sponsors/nicotordev)** and help keep this project growing! Your support enables:
-
-- 🚀 **Continuous Development** - New features and improvements
-- 🐛 **Bug Fixes & Maintenance** - Quick responses to issues
-- 📚 **Documentation & Tutorials** - Better learning resources
-- 🤝 **Community Support** - Help other developers succeed
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by <a href="https://github.com/nicotordev">Nicolas Torres</a> in Chile 🇨🇱</sub>
+  <sub>Built with ❤️ and ⚡ Bun by <a href="https://github.com/nicotordev">Nicolas Torres</a> in Chile 🇨🇱</sub>
 </p>
