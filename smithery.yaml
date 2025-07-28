@@ -1,0 +1,109 @@
+name: v0-mcp-ts
+displayName: v0.dev MCP Server
+description: A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development. Powered by Bun for 25x faster performance.
+version: 1.0.0
+author: Nicolas Torres <nicotordev@gmail.com>
+
+# Entry point for the MCP server
+entry: dist/index.js
+
+# Server metadata
+metadata:
+  homepage: https://github.com/nicotordev/v0-mcp-ts
+  repository: https://github.com/nicotordev/v0-mcp-ts.git
+  license: MIT
+  keywords:
+    - mcp
+    - model-context-protocol
+    - v0.dev
+    - ai
+    - web-development
+    - typescript
+    - claude
+    - code-generation
+    - component-generation
+    - debugging
+    - bun
+    - performance
+
+# Transport configuration
+transport: stdio
+
+# Environment variables needed for the server
+environment:
+  V0_API_KEY:
+    description: API key for v0.dev service
+    required: true
+    sensitive: true
+
+# Server capabilities
+capabilities:
+  tools:
+    - name: generate_component
+      description: Generate React components with v0.dev AI
+    - name: refactor_component
+      description: Refactor existing React components
+    - name: accessibility_auditor
+      description: Audit HTML/JSX for accessibility issues
+    - name: shadcn_component_generator
+      description: Generate shadcn/ui components
+    - name: tailwind_layout_generator
+      description: Generate Tailwind CSS layouts
+    - name: css_theme_generator
+      description: Generate CSS themes and Tailwind configs
+  
+  prompts:
+    - name: audit-accessibility
+      description: Generate accessibility audit prompts
+    - name: generate-component
+      description: Generate component creation prompts
+    - name: refactor-component
+      description: Generate component refactoring prompts
+    - name: generate-css-theme
+      description: Generate CSS theme creation prompts
+    - name: generate-shadcn-component
+      description: Generate shadcn component creation prompts
+    - name: generate-tailwind-layout
+      description: Generate Tailwind layout creation prompts
+    - name: create-webapp
+      description: Generate web application creation prompts
+  
+  resources:
+    - name: v0-api-docs
+      description: v0.dev API documentation
+    - name: performance-metrics
+      description: Server performance metrics
+
+# Build configuration
+build:
+  include:
+    - dist/
+    - package.json
+    - README.md
+    - LICENSE
+  exclude:
+    - node_modules/
+    - src/
+    - tests/
+    - .git/
+    - coverage/
+    - "*.test.*"
+    - "*.spec.*"
+
+# Runtime requirements
+runtime:
+  node: ">=18.0.0"
+  memory: 512MB
+  timeout: 30s
+
+# Tags for discoverability
+tags:
+  - ai-tools
+  - web-development
+  - react
+  - component-generation
+  - accessibility
+  - tailwind
+  - shadcn
+  - typescript
+  - debugging
