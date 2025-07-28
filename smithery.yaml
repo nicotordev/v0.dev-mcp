@@ -76,25 +76,22 @@ capabilities:
 
 # Build configuration
 build:
-  include:
-    - dist/
-    - package.json
-    - README.md
-    - LICENSE
-  exclude:
-    - node_modules/
-    - src/
-    - tests/
-    - .git/
-    - coverage/
-    - "*.test.*"
-    - "*.spec.*"
+  dockerfile: "Dockerfile"           # Path to your Dockerfile
+  dockerBuildPath: "."               # Docker build context
+startCommand:
+  type: "http"
+  configSchema:                      # JSON Schema for configuration
+    type: "object"
+    properties:
+      v0ApiKey:
+        type: "string"
+        description: "Your v0.dev API key"
+    required: ["v0ApiKey"]
+  exampleConfig:
+    v0ApiKey: "sk-example123"
 
 # Runtime requirements
-runtime:
-  node: ">=18.0.0"
-  memory: 512MB
-  timeout: 30s
+runtime: "container"
 
 # Tags for discoverability
 tags:
@@ -107,23 +104,3 @@ tags:
   - shadcn
   - typescript
   - debugging
-=======
-# Smithery configuration file: https://smithery.ai/docs/build/project-config
-
-startCommand:
-  type: stdio
-  commandFunction:
-    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
-    |-
-    (config) => ({ command: 'bun', args: ['run', 'dist/index.js'], env: { V0_API_KEY: config.v0ApiKey } })
-  configSchema:
-    # JSON Schema defining the configuration options for the MCP.
-    type: object
-    required:
-      - v0ApiKey
-    properties:
-      v0ApiKey:
-        type: string
-        description: Your v0.dev API key used to authenticate with the v0.dev AI service
-  exampleConfig:
-    v0ApiKey: pk_test_1234567890abcdef

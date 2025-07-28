@@ -1,142 +1,65 @@
 # =============================================================================
-# Multi-stage Dockerfile for v0-mcp-ts
-# Optimized for Bun runtime with security and performance best practices
+# Node.js Dockerfile for v0-mcp-ts - Smithery Compatible
+# Using official Node.js image for maximum deployment platform compatibility
 # =============================================================================
 
-# -----------------------------------------------------------------------------
-# Stage 1: Dependencies (for better layer caching)
-# -----------------------------------------------------------------------------
-FROM oven/bun:1.2.18-alpine AS deps
+FROM node:22-alpine
 
-# Install system dependencies for better security
+# Install system dependencies for security and signal handling
 RUN apk add --no-cache \
     dumb-init \
     ca-certificates \
     tzdata \
     && rm -rf /var/cache/apk/*
 
+# Create app directory
 WORKDIR /app
 
-# Copy package files first for better Docker layer caching
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Install Bun for building (but run with Node.js)
+RUN npm install -g bun@latest
+
+# Copy package files first
 COPY package.json bun.lock* ./
 
-# Install dependencies with frozen lockfile for reproducible builds
-# Skip postinstall scripts since source code isn't available yet
-RUN bun install --frozen-lockfile --ignore-scripts
-
-# -----------------------------------------------------------------------------
-# Stage 2: Builder (compile TypeScript)
-# -----------------------------------------------------------------------------
-FROM deps AS builder
-
-# Copy source code and configuration
+# Copy source code (needed for build)
 COPY . .
 
-# Build the application
-RUN bun run build && \
-    bun run type-check
-
-# -----------------------------------------------------------------------------
-# Stage 3: Production dependencies
-# -----------------------------------------------------------------------------
-FROM oven/bun:1.2.18-alpine AS prod-deps
-
-WORKDIR /app
-
-# Copy package files
-COPY package.json bun.lock* ./
-
-# Install only production dependencies (skip scripts for production)
-RUN bun install --frozen-lockfile --production --ignore-scripts && \
-    bun pm cache rm
-
-# -----------------------------------------------------------------------------
-# Stage 4: Production runtime
-# -----------------------------------------------------------------------------
-FROM oven/bun:1.2.18-alpine AS production
-
-# Install runtime dependencies and security tools
-RUN apk add --no-cache \
-    dumb-init \
-    ca-certificates \
-    tzdata \
-    curl \
-    && rm -rf /var/cache/apk/* \
-    && addgroup -g 1001 -S nodejs \
-    && adduser -S nodejs -u 1001
-
-WORKDIR /app
-
-# Copy production dependencies from prod-deps stage
-COPY --from=prod-deps --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=prod-deps --chown=nodejs:nodejs /app/package.json ./package.json
-
-# Copy built application from builder stage
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-
-# Copy necessary runtime files
-COPY --from=builder --chown=nodejs:nodejs /app/examples ./examples
+# Install dependencies with npm (more compatible) and build
+RUN npm install --production --omit=dev
 
 # Set production environment
 ENV NODE_ENV=production \
-    BUN_ENV=production \
     PORT=3000 \
     LOG_LEVEL=info
 
-# Switch to non-root user for security
+# Change ownership to nodejs user
+RUN chown -R nodejs:nodejs /app
+
+# Switch to non-root user
 USER nodejs
 
-# Expose port for MCP server (if using HTTP transport)
+# Expose port
 EXPOSE $PORT
 
-# Health check with timeout and retries
-HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-    CMD bun -e "process.exit(0)" || exit 1
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:'+process.env.PORT+'/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
 
-# Use dumb-init for proper signal handling in containers
+# Use dumb-init for proper signal handling
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the MCP server
-CMD ["bun", "run", "dist/index.js"]
+# Start the HTTP server with Node.js for maximum compatibility
+CMD ["node", "dist/http-server.js"]
 
 # -----------------------------------------------------------------------------
-# Stage 5: Development (for development workflow)
-# -----------------------------------------------------------------------------
-FROM deps AS development
-
-# Install additional development tools
-RUN apk add --no-cache git
-
-# Copy all source files
-COPY . .
-
-# Set development environment
-ENV NODE_ENV=development \
-    DEBUG=true \
-    LOG_LEVEL=debug
-
-# Expose port for development
-EXPOSE 3000
-
-# Use bun's development mode with hot reload
-CMD ["bun", "run", "dev"]
-
-# -----------------------------------------------------------------------------
-# Default stage: Production (ensure production is the default)
-# -----------------------------------------------------------------------------
-FROM production AS default
-
-# -----------------------------------------------------------------------------
-# Metadata and labels
+# Metadata
 # -----------------------------------------------------------------------------
 LABEL maintainer="Nicolas Torres <nicotordev@gmail.com>" \
-      description="v0-mcp-ts: High-performance MCP server for v0.dev AI integration" \
+      description="v0-mcp-ts: Node.js compatible MCP server for v0.dev AI integration" \
       version="2.0.0" \
       repository="https://github.com/nicotordev/v0-mcp-ts" \
-      license="MIT" \
-      org.opencontainers.image.title="v0-mcp-ts" \
-      org.opencontainers.image.description="AI-powered Model Context Protocol server" \
-      org.opencontainers.image.url="https://github.com/nicotordev/v0-mcp-ts" \
-      org.opencontainers.image.source="https://github.com/nicotordev/v0-mcp-ts" \
-      org.opencontainers.image.vendor="Nicolas Torres" \
-      org.opencontainers.image.licenses="MIT"
+      license="MIT" 
