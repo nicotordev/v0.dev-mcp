@@ -16,7 +16,7 @@ describe('v0.dev MCP Server Tools', () => {
       args: [distPath],
       env: {
         ...process.env,
-        V0_API_KEY: 'test-mock-key-12345',
+        // Use the actual V0_API_KEY from environment
       },
     });
 
@@ -34,13 +34,15 @@ describe('v0.dev MCP Server Tools', () => {
     }
   });
 
-  describe('generate_webapp tool', () => {
-    it('should handle missing API key gracefully', async () => {
+  describe('generate_component tool', () => {
+    it('should handle component generation request', async () => {
       const result = await client.callTool({
-        name: 'generate_webapp',
+        name: 'generate_component',
         arguments: {
-          prompt: 'Create a simple React counter app',
-          framework: 'react',
+          component_name: 'TestButton',
+          theme: 'modern blue theme with rounded corners',
+          props: ['label', 'onClick', 'disabled'],
+          styling: 'tailwind',
           stream: false,
         },
       });
@@ -50,132 +52,85 @@ describe('v0.dev MCP Server Tools', () => {
       expect(Array.isArray(result.content)).toBe(true);
       expect((result.content as any[]).length).toBeGreaterThan(0);
 
-      // Should either succeed (if real API key) or fail gracefully (if mock key)
       const content = result.content[0];
       expect(content.type).toBe('text');
       expect(typeof content.text).toBe('string');
     });
 
-    it('should validate input parameters', async () => {
-      // Test with invalid framework
-      try {
-        await client.callTool({
-          name: 'generate_webapp',
-          arguments: {
-            prompt: 'Create an app',
-            framework: 'invalid-framework', // This should cause validation error
-          },
-        });
-      } catch (error) {
-        // Should throw validation error
-        expect(error).toBeDefined();
-      }
-    });
-
-    it('should handle optional parameters', async () => {
-      const result = await client.callTool({
-        name: 'generate_webapp',
-        arguments: {
-          prompt: 'Create a simple app',
-          // framework is optional, should default to nextjs
-          // features is optional
-          // stream is optional, should default to false
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(result.content).toBeDefined();
-    });
-  });
-
-  describe('enhance_code tool', () => {
-    it('should handle code enhancement request', async () => {
-      const result = await client.callTool({
-        name: 'enhance_code',
-        arguments: {
-          code: 'function add(a, b) { return a + b; }',
-          enhancement: 'Add TypeScript types and error handling',
-          language: 'typescript',
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(result.content).toBeDefined();
-      expect((result.content as any[]).length).toBeGreaterThan(0);
-
-      const content = result.content[0];
-      expect(content.type).toBe('text');
-      expect(typeof content.text).toBe('string');
-    });
-
-    it('should use default language when not specified', async () => {
-      const result = await client.callTool({
-        name: 'enhance_code',
-        arguments: {
-          code: 'const x = 5;',
-          enhancement: 'Make it more robust',
-          // language not specified, should default to typescript
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(result.content).toBeDefined();
-    });
-  });
-
-  describe('debug_code tool', () => {
-    it('should handle code debugging request', async () => {
-      const result = await client.callTool({
-        name: 'debug_code',
-        arguments: {
-          code: 'function broken() { return x + y; }',
-          error_message: 'ReferenceError: x is not defined',
-          language: 'javascript',
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(result.content).toBeDefined();
-      expect((result.content as any[]).length).toBeGreaterThan(0);
-    });
-
-    it('should work without error message', async () => {
-      const result = await client.callTool({
-        name: 'debug_code',
-        arguments: {
-          code: 'function problematic() { /* some issues */ }',
-          // error_message is optional
-          language: 'javascript',
-        },
-      });
-
-      expect(result).toBeDefined();
-      expect(result.content).toBeDefined();
-    });
-  });
-
-  describe('generate_component tool', () => {
-    it('should generate React component', async () => {
+    it('should work with default parameters', async () => {
       const result = await client.callTool({
         name: 'generate_component',
         arguments: {
-          component_name: 'TestButton',
-          description: 'A reusable button component',
+          component_name: 'SimpleCard',
+          theme: 'minimalist design',
+          // props is optional, defaults to []
+          // styling is optional, defaults to tailwind
+          // stream is optional, defaults to true
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+    });
+
+    it('should handle different styling systems', async () => {
+      const result = await client.callTool({
+        name: 'generate_component',
+        arguments: {
+          component_name: 'StyledButton',
+          theme: 'modern dark theme',
+          styling: 'styled-components',
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+    });
+  });
+
+  describe('refactor_component tool', () => {
+    it('should handle component refactoring request', async () => {
+      const result = await client.callTool({
+        name: 'refactor_component',
+        arguments: {
+          code: `function Button({ label, onClick }) {
+  return <button onClick={onClick}>{label}</button>;
+}`,
+          improvements: ['Add TypeScript types', 'Add accessibility features'],
+          target_framework: 'react',
+          preserve_functionality: true,
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+      expect((result.content as any[]).length).toBeGreaterThan(0);
+    });
+
+    it('should work with default parameters', async () => {
+      const result = await client.callTool({
+        name: 'refactor_component',
+        arguments: {
+          code: 'const Card = () => <div>Card</div>',
+          improvements: ['Improve structure'],
+          // target_framework defaults to react
+          // preserve_functionality defaults to true
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+    });
+  });
+
+  describe('accessibility_auditor tool', () => {
+    it('should audit HTML/JSX for accessibility issues', async () => {
+      const result = await client.callTool({
+        name: 'accessibility_auditor',
+        arguments: {
+          code: '<img src="logo.png" /><div onclick="doSomething()">Click me</div>',
+          audit_level: 'comprehensive',
           framework: 'react',
-          props: [
-            {
-              name: 'label',
-              type: 'string',
-              required: true,
-              description: 'Button text',
-            },
-            {
-              name: 'onClick',
-              type: '() => void',
-              required: false,
-              description: 'Click handler',
-            },
-          ],
         },
       });
 
@@ -184,50 +139,143 @@ describe('v0.dev MCP Server Tools', () => {
       expect((result.content as any[]).length).toBeGreaterThan(0);
     });
 
-    it('should work with default framework and no props', async () => {
+    it('should work with default audit level', async () => {
       const result = await client.callTool({
-        name: 'generate_component',
+        name: 'accessibility_auditor',
         arguments: {
-          component_name: 'SimpleComponent',
-          description: 'A basic component',
+          code: '<button>Submit</button>',
+          // audit_level defaults to comprehensive
           // framework defaults to react
-          // props is optional
         },
       });
 
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
-      expect((result.content as any[]).length).toBeGreaterThan(0);
     });
 
-    it('should handle Vue components', async () => {
+    it('should handle different frameworks', async () => {
       const result = await client.callTool({
-        name: 'generate_component',
+        name: 'accessibility_auditor',
         arguments: {
-          component_name: 'VueCard',
-          description: 'A Vue card component',
+          code: '<div v-if="show">Content</div>',
           framework: 'vue',
         },
       });
 
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
-      expect((result.content as any[]).length).toBeGreaterThan(0);
     });
+  });
 
-    it('should handle Svelte components', async () => {
+  describe('shadcn_component_generator tool', () => {
+    it('should generate shadcn/ui components', async () => {
       const result = await client.callTool({
-        name: 'generate_component',
+        name: 'shadcn_component_generator',
         arguments: {
-          component_name: 'SvelteModal',
-          description: 'A Svelte modal component',
-          framework: 'svelte',
+          component_type: 'data-table',
+          shadcn_components: ['table', 'button', 'input'],
+          features: ['sorting', 'filtering', 'pagination'],
         },
       });
 
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
       expect((result.content as any[]).length).toBeGreaterThan(0);
+    });
+
+    it('should handle form components', async () => {
+      const result = await client.callTool({
+        name: 'shadcn_component_generator',
+        arguments: {
+          component_type: 'form',
+          shadcn_components: ['form', 'input', 'button', 'label'],
+          features: ['validation', 'error-handling'],
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+    });
+  });
+
+  describe('tailwind_layout_generator tool', () => {
+    it('should generate Tailwind CSS layouts', async () => {
+      const result = await client.callTool({
+        name: 'tailwind_layout_generator',
+        arguments: {
+          layout_type: 'dashboard',
+          sections: ['header', 'sidebar', 'main', 'footer'],
+          responsive: true,
+          dark_mode: true,
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+      expect((result.content as any[]).length).toBeGreaterThan(0);
+    });
+
+    it('should handle simple layouts', async () => {
+      const result = await client.callTool({
+        name: 'tailwind_layout_generator',
+        arguments: {
+          layout_type: 'landing-page',
+          sections: ['hero', 'features', 'cta'],
+          // responsive defaults to true
+          // dark_mode defaults to false
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+    });
+  });
+
+  describe('css_theme_generator tool', () => {
+    it('should generate CSS custom property themes', async () => {
+      const result = await client.callTool({
+        name: 'css_theme_generator',
+        arguments: {
+          theme_name: 'Ocean Blue',
+          primary_color: '#0066cc',
+          secondary_color: '#00a86b',
+          include_dark_variant: true,
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+      expect((result.content as any[]).length).toBeGreaterThan(0);
+    });
+
+    it('should generate basic theme with primary color only', async () => {
+      const result = await client.callTool({
+        name: 'css_theme_generator',
+        arguments: {
+          theme_name: 'Simple Red',
+          primary_color: '#ff0000',
+          // secondary_color is optional
+          // include_dark_variant defaults to false
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
+    });
+
+    it('should generate Tailwind config themes', async () => {
+      const result = await client.callTool({
+        name: 'css_theme_generator',
+        arguments: {
+          theme_name: 'Corporate Theme',
+          primary_color: '#1e40af',
+          secondary_color: '#f59e0b',
+          generate_tailwind_config: true,
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result.content).toBeDefined();
     });
   });
 
@@ -238,6 +286,7 @@ describe('v0.dev MCP Server Tools', () => {
           name: 'non_existent_tool',
           arguments: {},
         });
+        expect.fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeDefined();
       }
@@ -246,15 +295,59 @@ describe('v0.dev MCP Server Tools', () => {
     it('should handle malformed arguments', async () => {
       try {
         await client.callTool({
-          name: 'generate_webapp',
+          name: 'generate_component',
           arguments: {
-            // Missing required 'prompt' parameter
-            framework: 'react',
+            // Missing required 'component_name' and 'theme' parameters
+            styling: 'tailwind',
           },
         });
+        expect.fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeDefined();
       }
+    });
+
+    it('should handle invalid enum values', async () => {
+      try {
+        await client.callTool({
+          name: 'generate_component',
+          arguments: {
+            component_name: 'TestComponent',
+            theme: 'modern',
+            styling: 'invalid-styling-system', // Invalid enum value
+          },
+        });
+        expect.fail('Should have thrown an error');
+      } catch (error) {
+        expect(error).toBeDefined();
+      }
+    });
+  });
+
+  describe('Tool Discovery', () => {
+    it('should list all available tools', async () => {
+      const tools = await client.listTools();
+      
+      expect(tools).toBeDefined();
+      expect(tools.tools).toBeDefined();
+      expect(Array.isArray(tools.tools)).toBe(true);
+      
+      const toolNames = tools.tools.map(tool => tool.name);
+      expect(toolNames).toContain('generate_component');
+      expect(toolNames).toContain('refactor_component');
+      expect(toolNames).toContain('accessibility_auditor');
+      expect(toolNames).toContain('shadcn_component_generator');
+      expect(toolNames).toContain('tailwind_layout_generator');
+      expect(toolNames).toContain('css_theme_generator');
+    });
+
+    it('should provide tool descriptions', async () => {
+      const tools = await client.listTools();
+      
+      const componentGenerator = tools.tools.find(t => t.name === 'generate_component');
+      expect(componentGenerator).toBeDefined();
+      expect(componentGenerator?.description).toBeDefined();
+      expect(componentGenerator?.description).toContain('Generate');
     });
   });
 });

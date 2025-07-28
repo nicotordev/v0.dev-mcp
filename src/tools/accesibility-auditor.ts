@@ -4,6 +4,7 @@ import { logger } from "../lib/logger";
 import { performanceTracker } from "../lib/performance";
 import { nanoid } from "nanoid";
 import { RequestHandlerExtra } from "@modelcontextprotocol/sdk/shared/protocol.js";
+import { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 import {
   ServerRequest,
   ServerNotification,
@@ -87,7 +88,7 @@ export const accessibilityAuditorOutputSchema = z.object({
 });
 
 // Tool annotations for MCP
-export const accessibilityAuditorAnnotations = {
+export const accessibilityAuditorAnnotations: ToolAnnotations = {
   inputExample: {
     code: '<button onclick="handleClick()">Click me</button>',
     audit_level: "comprehensive",
