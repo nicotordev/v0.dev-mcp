@@ -879,6 +879,9 @@ function setupErrorHandling() {
   });
 }
 
+// Export the server instance for HTTP wrapper
+export { server };
+
 /**
  * Enhanced server startup with comprehensive logging and monitoring
  */

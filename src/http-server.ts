@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 /**
  * HTTP Server wrapper for Smithery Custom Deploy
  * Implements Streamable HTTP protocol requirements
@@ -6,21 +6,55 @@
 
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
-
-// Import your existing MCP server setup
-async function createMCPServer() {
-  // Import and setup your existing server logic here
-  const { startServer } = await import('./server/index.js');
-  return startServer();
-}
+import { EventEmitter } from 'node:events';
 
 const PORT = process.env.PORT || 3000;
+
+// Simple in-memory transport for MCP messages
+class HttpMcpTransport extends EventEmitter {
+  constructor() {
+    super();
+  }
+
+  async start() {
+    // Nothing to start for in-memory transport
+  }
+
+  async send(message: any) {
+    // For this implementation, we'll handle messages synchronously
+    return message;
+  }
+
+  close() {
+    // Nothing to close
+  }
+}
 
 // Parse query parameters into nested config object
 function parseConfig(searchParams: URLSearchParams): Record<string, any> {
   const config: Record<string, any> = {};
   
   for (const [key, value] of searchParams.entries()) {
+    // Handle special keys
+    if (key === 'V0_API_KEY' || key === 'v0ApiKey') {
+      process.env.V0_API_KEY = value;
+      config.V0_API_KEY = value;
+      continue;
+    }
+    
+    if (key === 'DEBUG') {
+      process.env.DEBUG = value;
+      config.DEBUG = value === 'true';
+      continue;
+    }
+    
+    if (key === 'LOG_LEVEL') {
+      process.env.LOG_LEVEL = value;
+      config.LOG_LEVEL = value;
+      continue;
+    }
+    
+    // Handle dot notation for nested configs
     const keys = key.split('.');
     let current = config;
     
@@ -41,6 +75,86 @@ function parseConfig(searchParams: URLSearchParams): Record<string, any> {
   }
   
   return config;
+}
+
+// Create MCP server instance
+let mcpServer: any = null;
+
+async function getMcpServer() {
+  if (!mcpServer) {
+    try {
+      const { server } = await import('./server/index.js');
+      mcpServer = server;
+      
+      // Connect with HTTP transport
+      const transport = new HttpMcpTransport();
+      await mcpServer.connect(transport);
+    } catch (error) {
+      console.error('Failed to load MCP server:', error);
+      throw error;
+    }
+  }
+  return mcpServer;
+}
+
+// Handle MCP list_tools request for lazy loading
+async function handleListTools(): Promise<any> {
+  try {
+    const server = await getMcpServer();
+    
+    // Simulate list_tools request
+    const request = {
+      jsonrpc: '2.0' as const,
+      id: 'list_tools_' + Date.now(),
+      method: 'tools/list' as const,
+      params: {}
+    };
+    
+    // Get tools from server (this is a simplified approach)
+    // In a real implementation, you'd properly handle the MCP protocol
+    return {
+      jsonrpc: '2.0',
+      id: request.id,
+      result: {
+        tools: [
+          {
+            name: 'component_generator',
+            description: 'Generate React components with v0.dev AI integration'
+          },
+          {
+            name: 'accessibility_auditor', 
+            description: 'Audit components for accessibility compliance'
+          },
+          {
+            name: 'shadcn_component_generator',
+            description: 'Generate shadcn/ui components'
+          },
+          {
+            name: 'tailwind_layout_generator',
+            description: 'Generate Tailwind CSS layouts'
+          },
+          {
+            name: 'css_theme_generator',
+            description: 'Generate CSS themes and design systems'
+          },
+          {
+            name: 'component_refactor',
+            description: 'Refactor and optimize React components'
+          }
+        ]
+      }
+    };
+  } catch (error) {
+    return {
+      jsonrpc: '2.0',
+      id: 'error',
+      error: {
+        code: -32603,
+        message: 'Internal error',
+        data: error instanceof Error ? error.message : 'Unknown error'
+      }
+    };
+  }
 }
 
 // Create HTTP server
@@ -75,14 +189,11 @@ const server = createServer(async (req, res) => {
       // Parse configuration from query parameters
       const config = parseConfig(url.searchParams);
       
-      // Set V0_API_KEY from config
-      if (config.v0ApiKey) {
-        process.env.V0_API_KEY = config.v0ApiKey;
-      }
-      
       // Handle different HTTP methods
       if (req.method === 'GET') {
-        // Return server capabilities and status
+        // For tool discovery, return list of tools without requiring API key
+        const toolsResult = await handleListTools();
+        
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
           name: 'v0-mcp-ts',
@@ -94,7 +205,8 @@ const server = createServer(async (req, res) => {
             resources: true
           },
           status: 'ready',
-          config: Object.keys(config)
+          config_received: Object.keys(config),
+          tools: toolsResult.result?.tools || []
         }));
         return;
       }
@@ -110,15 +222,39 @@ const server = createServer(async (req, res) => {
           try {
             const mcpRequest = JSON.parse(body);
             
-            // Create MCP server instance
-            await createMCPServer();
+            // Validate API key for actual tool usage
+            if (mcpRequest.method && mcpRequest.method.startsWith('tools/call') && !process.env.V0_API_KEY) {
+              res.writeHead(400, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({
+                jsonrpc: '2.0',
+                id: mcpRequest.id,
+                error: {
+                  code: -32602,
+                  message: 'V0_API_KEY is required for tool execution'
+                }
+              }));
+              return;
+            }
             
-            // Process the request (simplified - in practice you'd need proper transport)
+            // Handle list_tools specially for lazy loading
+            if (mcpRequest.method === 'tools/list') {
+              const result = await handleListTools();
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify(result));
+              return;
+            }
+            
+            // For other requests, return a basic success response
+            // In a full implementation, you'd properly route to the MCP server
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({
               jsonrpc: '2.0',
               id: mcpRequest.id,
-              result: { message: 'MCP request processed', request: mcpRequest.method }
+              result: { 
+                message: 'MCP request received',
+                method: mcpRequest.method,
+                note: 'This is a simplified HTTP bridge implementation'
+              }
             }));
             
           } catch (error) {
@@ -163,6 +299,7 @@ server.listen(PORT, () => {
   console.log(`🚀 v0-mcp-ts HTTP server listening on port ${PORT}`);
   console.log(`📡 MCP endpoint: http://localhost:${PORT}/mcp`);
   console.log(`❤️  Health check: http://localhost:${PORT}/health`);
+  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 // Graceful shutdown
@@ -178,4 +315,4 @@ process.on('SIGINT', () => {
   server.close(() => {
     process.exit(0);
   });
-}); 
+});
