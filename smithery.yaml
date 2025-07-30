@@ -1,10 +1,42 @@
-runtime: "typescript"
+runtime: "container"
+
+# Build configuration
+build:
+  dockerfile: "Dockerfile"
+  dockerBuildPath: "."
+
+# Start command configuration
+startCommand:
+  type: "http"
+  configSchema:
+    type: "object"
+    properties:
+      V0_API_KEY:
+        type: "string"
+        title: "v0.dev API Key"
+        description: "Your v0.dev API key for accessing the platform"
+      DEBUG:
+        type: "boolean"
+        title: "Debug Mode"
+        description: "Enable debug logging"
+        default: false
+      LOG_LEVEL:
+        type: "string"
+        title: "Log Level"
+        description: "Logging level"
+        default: "info"
+        enum: ["error", "warn", "info", "debug"]
+    required: ["V0_API_KEY"]
+  exampleConfig:
+    V0_API_KEY: "your-v0-api-key-here"
+    DEBUG: false
+    LOG_LEVEL: "info"
 
 # Project metadata
 name: "v0-mcp-ts"
 version: "1.0.0"
 description: "A powerful Model Context Protocol (MCP) server that integrates v0.dev AI capabilities for modern web development. Powered by Bun for 25x faster performance."
-author: "Nicolas Torres"
+author: "Conce AI"
 license: "MIT"
 repository: "https://github.com/Conce-AI/v0.dev"
 homepage: "https://github.com/Conce-AI/v0.dev#readme"
