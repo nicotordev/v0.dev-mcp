@@ -192,22 +192,101 @@ const server = createServer(async (req, res) => {
       
       // Handle different HTTP methods
       if (req.method === 'GET') {
-        // For tool discovery, return list of tools without requiring API key
-        const toolsResult = await handleListTools();
-        
+        // Return proper MCP server info for tool discovery
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
-          name: 'v0-mcp-ts',
-          version: '2.0.0',
-          description: 'MCP server for v0.dev AI integration',
+          protocolVersion: '2024-11-05',
           capabilities: {
-            tools: true,
-            prompts: true,
-            resources: true
+            logging: {},
+            prompts: {
+              listChanged: true
+            },
+            resources: {
+              subscribe: true,
+              listChanged: true
+            },
+            tools: {
+              listChanged: true
+            }
           },
-          status: 'ready',
-          config_received: Object.keys(config),
-          tools: toolsResult.result?.tools || []
+          serverInfo: {
+            name: 'v0-mcp-ts',
+            version: '2.0.0',
+            description: 'MCP server for v0.dev AI integration'
+          },
+          tools: [
+            {
+              name: 'component_generator',
+              description: 'Generate React components with v0.dev AI integration',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  component_name: { type: 'string', description: 'Name of the component to generate' },
+                  component_description: { type: 'string', description: 'Description of what the component should do' }
+                },
+                required: ['component_name', 'component_description']
+              }
+            },
+            {
+              name: 'accessibility_auditor',
+              description: 'Audit components for accessibility compliance',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  component_code: { type: 'string', description: 'React component code to audit' }
+                },
+                required: ['component_code']
+              }
+            },
+            {
+              name: 'shadcn_component_generator',
+              description: 'Generate shadcn/ui components',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  component_type: { type: 'string', description: 'Type of shadcn component to generate' },
+                  customization: { type: 'string', description: 'Customization requirements' }
+                },
+                required: ['component_type']
+              }
+            },
+            {
+              name: 'tailwind_layout_generator',
+              description: 'Generate Tailwind CSS layouts',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  layout_type: { type: 'string', description: 'Type of layout to generate' },
+                  requirements: { type: 'string', description: 'Layout requirements and specifications' }
+                },
+                required: ['layout_type', 'requirements']
+              }
+            },
+            {
+              name: 'css_theme_generator',
+              description: 'Generate CSS themes and design systems',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  theme_name: { type: 'string', description: 'Name of the theme' },
+                  color_palette: { type: 'string', description: 'Primary colors for the theme' }
+                },
+                required: ['theme_name']
+              }
+            },
+            {
+              name: 'component_refactor',
+              description: 'Refactor and optimize React components',
+              inputSchema: {
+                type: 'object',
+                properties: {
+                  component_code: { type: 'string', description: 'React component code to refactor' },
+                  optimization_goals: { type: 'string', description: 'What to optimize for (performance, accessibility, etc.)' }
+                },
+                required: ['component_code']
+              }
+            }
+          ]
         }));
         return;
       }
