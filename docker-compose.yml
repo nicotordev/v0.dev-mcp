@@ -3,7 +3,7 @@
 # Comprehensive setup for development, testing, and production environments
 # =============================================================================
 
-version: '3.8'
+# Modern Docker Compose file - version field is deprecated and not needed
 
 # -----------------------------------------------------------------------------
 # Services
@@ -14,20 +14,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
       args:
-        - NODE_ENV=production
+        NODE_ENV: production
     image: v0-mcp-ts:latest
     container_name: v0-mcp-ts-prod
     restart: unless-stopped
     
     environment:
-      - NODE_ENV=production
-      - BUN_ENV=production
-      - V0_API_KEY=${V0_API_KEY}
-      - DEBUG=${DEBUG:-false}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - PORT=3000
+      NODE_ENV: production
+      BUN_ENV: production
+      V0_API_KEY: ${V0_API_KEY}
+      DEBUG: ${DEBUG:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: 3000
     
     # Resource limits for production
     deploy:
@@ -52,7 +51,7 @@ services:
     
     # Enhanced health check
     healthcheck:
-      test: ['CMD', 'bun', '-e', 'process.exit(0)']
+      test: ["CMD", "node", "-e", "process.exit(0)"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -60,7 +59,7 @@ services:
     
     # Security options
     security_opt:
-      - no-new-privileges:true
+      - "no-new-privileges:true"
     
     # Read-only root filesystem for security
     read_only: true
@@ -68,30 +67,29 @@ services:
       - /tmp:rw,noexec,nosuid,size=100m
     
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.environment=production'
-      - 'com.nicotordev.version=2.0.0'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.environment: "production"
+      com.nicotordev.version: "2.0.0"
 
   # Development Environment
   v0-mcp-ts-dev:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
       args:
-        - NODE_ENV=development
+        NODE_ENV: development
     image: v0-mcp-ts:dev
     container_name: v0-mcp-ts-dev
     restart: unless-stopped
     
     environment:
-      - NODE_ENV=development
-      - BUN_ENV=development
-      - V0_API_KEY=${V0_API_KEY:-test-mock-key-12345}
-      - DEBUG=true
-      - LOG_LEVEL=debug
-      - PORT=3000
-      - ENABLE_PERFORMANCE_TRACKING=true
+      NODE_ENV: development
+      BUN_ENV: development
+      V0_API_KEY: ${V0_API_KEY:-test-mock-key-12345}
+      DEBUG: true
+      LOG_LEVEL: debug
+      PORT: 3000
+      ENABLE_PERFORMANCE_TRACKING: true
     
     volumes:
       # Mount source code for hot reload
@@ -120,27 +118,26 @@ services:
       - development
     
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.environment=development'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.environment: "development"
 
   # Testing Environment
   v0-mcp-ts-test:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
       args:
-        - NODE_ENV=test
+        NODE_ENV: test
     image: v0-mcp-ts:test
     container_name: v0-mcp-ts-test
     
     environment:
-      - NODE_ENV=test
-      - BUN_ENV=test
-      - V0_API_KEY=test-mock-key-12345
-      - DEBUG=false
-      - LOG_LEVEL=error
-      - CI=true
+      NODE_ENV: test
+      BUN_ENV: test
+      V0_API_KEY: test-mock-key-12345
+      DEBUG: false
+      LOG_LEVEL: error
+      CI: true
     
     volumes:
       - ./src:/app/src:ro
@@ -163,28 +160,27 @@ services:
       - testing
     
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.environment=test'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.environment: "test"
 
   # CI/CD Test Runner (for GitHub Actions)
   v0-mcp-ts-ci:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
       args:
-        - NODE_ENV=test
+        NODE_ENV: test
     image: v0-mcp-ts:ci
     container_name: v0-mcp-ts-ci
     
     environment:
-      - NODE_ENV=test
-      - BUN_ENV=test
-      - V0_API_KEY=test-mock-key-12345
-      - DEBUG=false
-      - LOG_LEVEL=error
-      - CI=true
-      - ENABLE_PERFORMANCE_TRACKING=false
+      NODE_ENV: test
+      BUN_ENV: test
+      V0_API_KEY: test-mock-key-12345
+      DEBUG: false
+      LOG_LEVEL: error
+      CI: true
+      ENABLE_PERFORMANCE_TRACKING: false
     
     volumes:
       - .:/app:ro
@@ -208,8 +204,8 @@ services:
       - ci
     
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.environment=ci'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.environment: "ci"
 
 # -----------------------------------------------------------------------------
 # Networks
@@ -220,8 +216,8 @@ networks:
     driver_opts:
       com.docker.network.bridge.name: v0-mcp-bridge
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.type=network'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.type: "network"
 
 # -----------------------------------------------------------------------------
 # Volumes
@@ -231,29 +227,29 @@ volumes:
   v0-logs:
     driver: local
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.type=logs'
-      - 'com.nicotordev.environment=production'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.type: "logs"
+      com.nicotordev.environment: "production"
 
   # Development logs  
   v0-dev-logs:
     driver: local
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.type=logs'
-      - 'com.nicotordev.environment=development'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.type: "logs"
+      com.nicotordev.environment: "development"
 
   # Node modules cache for development
   v0-node-modules:
     driver: local
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.type=cache'
-      - 'com.nicotordev.environment=development'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.type: "cache"
+      com.nicotordev.environment: "development"
 
   # Application cache
   v0-cache:
     driver: local
     labels:
-      - 'com.nicotordev.project=v0-mcp-ts'
-      - 'com.nicotordev.type=cache'
+      com.nicotordev.project: "v0-mcp-ts"
+      com.nicotordev.type: "cache"
