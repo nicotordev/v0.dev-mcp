@@ -100,7 +100,8 @@ async function getMcpServer() {
 // Handle MCP list_tools request for lazy loading
 async function handleListTools(): Promise<any> {
   try {
-    const server = await getMcpServer();
+    // Initialize MCP server (but don't use the return value in this simplified implementation)
+    await getMcpServer();
     
     // Simulate list_tools request
     const request = {
