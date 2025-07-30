@@ -187,11 +187,9 @@ const server = createServer(async (req, res) => {
   // MCP endpoint as required by Smithery
   if (url.pathname === '/mcp') {
     try {
-      // Parse configuration from query parameters
-      const config = parseConfig(url.searchParams);
-      
       // Handle different HTTP methods
       if (req.method === 'GET') {
+        // For GET requests (tool discovery), we don't need to parse config
         // Return proper MCP server info for tool discovery
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
@@ -292,6 +290,9 @@ const server = createServer(async (req, res) => {
       }
       
       if (req.method === 'POST') {
+        // Parse configuration from query parameters for POST requests
+        const config = parseConfig(url.searchParams);
+        
         // Handle MCP requests
         let body = '';
         req.on('data', chunk => {
@@ -301,6 +302,11 @@ const server = createServer(async (req, res) => {
         req.on('end', async () => {
           try {
             const mcpRequest = JSON.parse(body);
+            
+            // Log received configuration (for debugging)
+            if (Object.keys(config).length > 0) {
+              console.log('Received configuration:', Object.keys(config));
+            }
             
             // Validate API key for actual tool usage
             if (mcpRequest.method && mcpRequest.method.startsWith('tools/call') && !process.env.V0_API_KEY) {
