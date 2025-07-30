@@ -28,8 +28,8 @@ COPY package.json bun.lock* ./
 # Copy source code (needed for build)
 COPY . .
 
-# Install dependencies with npm (more compatible) and build
-RUN npm install --production --omit=dev
+# Install dependencies with Bun
+RUN bun install --production
 
 # Set production environment
 ENV NODE_ENV=production \
