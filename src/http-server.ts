@@ -8,7 +8,7 @@ import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { EventEmitter } from 'node:events';
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
 // Simple in-memory transport for MCP messages
 class HttpMcpTransport extends EventEmitter {
@@ -161,6 +161,9 @@ async function handleListTools(): Promise<any> {
 // Create HTTP server
 const server = createServer(async (req, res) => {
   const url = new URL(req.url!, `http://${req.headers.host}`);
+  
+  // Log all requests for debugging
+  console.log(`📥 ${req.method} ${url.pathname}${url.search}`);
   
   // CORS headers for browser compatibility
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -381,11 +384,25 @@ const server = createServer(async (req, res) => {
   res.end(JSON.stringify({ error: 'Not found' }));
 });
 
-server.listen(PORT, () => {
-  console.log(`🚀 v0-mcp-ts HTTP server listening on port ${PORT}`);
-  console.log(`📡 MCP endpoint: http://localhost:${PORT}/mcp`);
-  console.log(`❤️  Health check: http://localhost:${PORT}/health`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 v0-mcp-ts HTTP server listening on 0.0.0.0:${PORT}`);
+  console.log(`📡 MCP endpoint: http://0.0.0.0:${PORT}/mcp`);
+  console.log(`❤️  Health check: http://0.0.0.0:${PORT}/health`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔑 V0_API_KEY: ${process.env.V0_API_KEY ? '[SET]' : '[NOT SET]'}`);
+  console.log(`📊 Ready to handle MCP requests via HTTP`);
+});
+
+// Handle server errors
+server.on('error', (error) => {
+  console.error('❌ Server error:', error);
+  process.exit(1);
+});
+
+// Log when server starts listening
+server.on('listening', () => {
+  const address = server.address();
+  console.log(`✅ Server successfully bound to:`, address);
 });
 
 // Graceful shutdown
